@@ -1,4 +1,4 @@
-//===-- RandUtils.cpp -----------------------------------------------------===//
+//===-- Implementation header for pipe --------------------------*- C++ -*-===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,14 +6,13 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "RandUtils.h"
-
-#include <cstdlib>
+#ifndef LLVM_LIBC_SRC_UNISTD_PIPE_H
+#define LLVM_LIBC_SRC_UNISTD_PIPE_H
 
 namespace LIBC_NAMESPACE {
-namespace testutils {
 
-int rand() { return std::rand(); }
+int pipe(int pipefd[2]);
 
-} // namespace testutils
 } // namespace LIBC_NAMESPACE
+
+#endif // LLVM_LIBC_SRC_UNISTD_PIPE_H
