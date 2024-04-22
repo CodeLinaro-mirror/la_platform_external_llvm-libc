@@ -1,4 +1,4 @@
-//===-- Implementation of feholdexcept function ---------------------------===//
+//===-- Implementation of the pthread_condattr_destroy --------------------===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,18 +6,18 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "src/fenv/feholdexcept.h"
-#include "hdr/types/fenv_t.h"
-#include "src/__support/FPUtil/FEnvImpl.h"
+#include "pthread_condattr_destroy.h"
+
 #include "src/__support/common.h"
+
+#include <pthread.h>
 
 namespace LIBC_NAMESPACE {
 
-LLVM_LIBC_FUNCTION(int, feholdexcept, (fenv_t * envp)) {
-  if (fputil::get_env(envp) != 0)
-    return -1;
-  fputil::clear_except(FE_ALL_EXCEPT);
-  fputil::disable_except(FE_ALL_EXCEPT);
+LLVM_LIBC_FUNCTION(int, pthread_condattr_destroy,
+                   (pthread_condattr_t * attr [[gnu::unused]])) {
+  // Initializing a pthread_condattr_t acquires no resources, so this is a
+  // no-op.
   return 0;
 }
 
