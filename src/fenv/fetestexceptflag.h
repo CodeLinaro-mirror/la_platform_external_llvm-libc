@@ -1,4 +1,4 @@
-//===-- Implementation header for feupdateenv -------------------*- C++ -*-===//
+//===-- Implementation header for fetestexceptflag --------------*- C++ -*-===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,15 +6,15 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef LLVM_LIBC_SRC_FENV_FEUPDATEENV_H
-#define LLVM_LIBC_SRC_FENV_FEUPDATEENV_H
+#ifndef LLVM_LIBC_SRC_FENV_FETESTEXCEPTFLAG_H
+#define LLVM_LIBC_SRC_FENV_FETESTEXCEPTFLAG_H
 
-#include "hdr/types/fenv_t.h"
+#include "hdr/types/fexcept_t.h"
 
 namespace LIBC_NAMESPACE {
 
-int feupdateenv(const fenv_t *);
+int fetestexceptflag(const fexcept_t *, int excepts);
 
 } // namespace LIBC_NAMESPACE
 
-#endif // LLVM_LIBC_SRC_FENV_FEUPDATEENV_H
+#endif // LLVM_LIBC_SRC_FENV_FETESTEXCEPTFLAG_H
