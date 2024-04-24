@@ -1,4 +1,4 @@
-//===-- Implementation of feupdateenv function ----------------------------===//
+//===-- Implementation of fetestexceptflag function -----------------------===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,19 +6,18 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "src/fenv/feupdateenv.h"
+#include "src/fenv/fetestexceptflag.h"
+#include "hdr/types/fexcept_t.h"
 #include "src/__support/FPUtil/FEnvImpl.h"
 #include "src/__support/common.h"
 
-#include "hdr/types/fenv_t.h"
-
 namespace LIBC_NAMESPACE {
 
-LLVM_LIBC_FUNCTION(int, feupdateenv, (const fenv_t *envp)) {
-  int current_excepts = fputil::test_except(FE_ALL_EXCEPT);
-  if (fputil::set_env(envp) != 0)
-    return -1;
-  return fputil::raise_except(current_excepts);
+LLVM_LIBC_FUNCTION(int, fetestexceptflag,
+                   (const fexcept_t *flagp, int excepts)) {
+  static_assert(sizeof(int) >= sizeof(fexcept_t),
+                "fexcept_t value cannot fit in an int value.");
+  return *flagp | fputil::test_except(excepts);
 }
 
 } // namespace LIBC_NAMESPACE
