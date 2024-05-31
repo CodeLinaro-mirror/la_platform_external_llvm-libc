@@ -1,0 +1,5 @@
+{
+  "postsubmit": [
+    {"name": "llvmlibc_stdlib_bsearch_test"}
+  ]
+}
