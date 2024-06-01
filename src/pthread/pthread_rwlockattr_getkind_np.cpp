@@ -1,4 +1,4 @@
-//===-- Single-precision scalbnl function ---------------------------------===//
+//===-- Implementation of the pthread_rwlockattr_getkind_np ---------------===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,19 +6,19 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "src/math/scalbnl.h"
-#include "hdr/float_macros.h"
-#include "src/__support/FPUtil/ManipulationFunctions.h"
+#include "pthread_rwlockattr_getkind_np.h"
+
 #include "src/__support/common.h"
 
-#if FLT_RADIX != 2
-#error "FLT_RADIX != 2 is not supported."
-#endif
+#include <pthread.h> // pthread_rwlockattr_t
 
 namespace LIBC_NAMESPACE {
 
-LLVM_LIBC_FUNCTION(long double, scalbnl, (long double x, int n)) {
-  return fputil::ldexp(x, n);
+LLVM_LIBC_FUNCTION(int, pthread_rwlockattr_getkind_np,
+                   (const pthread_rwlockattr_t *__restrict attr,
+                    int *__restrict pref)) {
+  *pref = attr->pref;
+  return 0;
 }
 
 } // namespace LIBC_NAMESPACE
