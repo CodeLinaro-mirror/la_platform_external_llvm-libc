@@ -1,0 +1,8 @@
+{
+  "postsubmit": [
+    {
+      "name": "llvmlibc_stdlib_bsearch_test",
+      "options": [ { "native-test-flag": "--gtest_color=no"} ]
+    }
+  ]
+}
