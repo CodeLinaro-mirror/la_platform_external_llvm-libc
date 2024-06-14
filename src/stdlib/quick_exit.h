@@ -1,4 +1,4 @@
-//===------------------- Implementation of _Exit --------------------------===//
+//===-- Implementation header for quick_exit --------------------*- C++ -*-===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,15 +6,13 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "src/__support/OSUtil/exit.h"
-#include "src/__support/common.h"
-
-#include "src/stdlib/_Exit.h"
+#ifndef LLVM_LIBC_SRC_STDLIB_QUICK_EXIT_H
+#define LLVM_LIBC_SRC_STDLIB_QUICK_EXIT_H
 
 namespace LIBC_NAMESPACE {
 
-[[noreturn]] LLVM_LIBC_FUNCTION(void, _Exit, (int status)) {
-  internal::exit(status);
-}
+[[noreturn]] void quick_exit(int status);
 
 } // namespace LIBC_NAMESPACE
+
+#endif // LLVM_LIBC_SRC_STDLIB_QUICK_EXIT_H
