@@ -1,4 +1,4 @@
-//===------------------- Implementation of _Exit --------------------------===//
+//===-- Implementation of the pthread_rwlockattr_getkind_np ---------------===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,15 +6,19 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "src/__support/OSUtil/exit.h"
+#include "pthread_rwlockattr_getkind_np.h"
+
 #include "src/__support/common.h"
 
-#include "src/stdlib/_Exit.h"
+#include <pthread.h> // pthread_rwlockattr_t
 
 namespace LIBC_NAMESPACE {
 
-[[noreturn]] LLVM_LIBC_FUNCTION(void, _Exit, (int status)) {
-  internal::exit(status);
+LLVM_LIBC_FUNCTION(int, pthread_rwlockattr_getkind_np,
+                   (const pthread_rwlockattr_t *__restrict attr,
+                    int *__restrict pref)) {
+  *pref = attr->pref;
+  return 0;
 }
 
 } // namespace LIBC_NAMESPACE
