@@ -1,4 +1,4 @@
-//===-- Unittests for scalbnl ---------------------------------------------===//
+//===-- Unittests for setpayloadf16 ---------------------------------------===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,8 +6,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "ScalbnTest.h"
+#include "SetPayloadTest.h"
 
-#include "src/math/scalbnl.h"
+#include "src/math/setpayloadf16.h"
 
-LIST_SCALBN_TESTS(long double, int, LIBC_NAMESPACE::scalbnl)
+LIST_SETPAYLOAD_TESTS(float16, LIBC_NAMESPACE::setpayloadf16)
