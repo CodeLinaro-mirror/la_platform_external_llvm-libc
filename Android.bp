@@ -1,21 +1,40 @@
 // https://ci.android.com/builds/latest/branches/aosp-build-tools/targets/linux/view/soong_build.html
 
+cc_defaults {
+    name: "llvmlibc_defaults",
+    cppflags: [
+        // Necessary to build.
+        "-DLIBC_NAMESPACE=llvmlibc",
+    ],
+    arch: {
+        // TODO: https://github.com/llvm/llvm-project/issues/93709
+        // llvm-libc does not (yet) support 32b x86.
+        x86: {
+            enabled: false,
+        },
+        // TODO: https://github.com/llvm/llvm-project/issues/93738
+        // llvm-libc does not (yet) support --target=armv7a-linux -mthumb
+        arm: {
+            cppflags: ["-marm"],
+        },
+    },
+}
+
 cc_library_static {
     name: "llvmlibc",
+    defaults: ["llvmlibc_defaults"],
     visibility: [
-      "//bionic/libc",
+        "//bionic/libc",
     ],
     include_dirs: [
-      "external/llvm-libc",
+        "external/llvm-libc",
     ],
     srcs: [
-      "src/stdlib/bsearch.cpp",
+        "src/stdlib/bsearch.cpp",
     ],
-    cflags: [
-      // Necessary for non-namespaced exports.
-      "-DLIBC_COPT_PUBLIC_PACKAGING",
-      // Necessary to build.
-      "-DLIBC_NAMESPACE=llvmlibc",
+    cppflags: [
+        // Necessary for non-namespaced exports.
+        "-DLIBC_COPT_PUBLIC_PACKAGING",
     ],
     // No C++ runtime.
     stl: "none",
@@ -33,10 +52,41 @@ cc_library_static {
     vendor_ramdisk_available: true,
 
     // Bionic's dependencies must also set this.
-    apex_available: [
-      "com.android.runtime",
-    ],
+    apex_available: ["com.android.runtime"],
 
     // When llvm-libc includes <stdlib.h>, use bionic's headers for these.
     header_libs: ["libc_headers"],
+}
+
+cc_test_library {
+    name: "llvmlibc_test_harness",
+    defaults: ["llvmlibc_defaults"],
+    srcs: [
+        "test/UnitTest/LibcTest.cpp",
+        "test/UnitTest/TestLogger.cpp",
+        "test/UnitTest/LibcTestMain.cpp",
+    ],
+}
+
+cc_defaults {
+    name: "llvmlibc_test_defaults",
+    defaults: ["llvmlibc_defaults"],
+    static_libs: [
+        "llvmlibc",
+        "llvmlibc_test_harness",
+    ],
+    // Do not try to link against gtest. llvm-libc has its own pseudo-gtest
+    // framework.
+    gtest: false,
+    // Needed to avoid the diagnostic:
+    // WARNING: Please add {test name} to either suite:
+    // ['device-tests', 'general-tests'] for this TEST_MAPPING file to work
+    // with TreeHugger.
+    test_suites: ["device-tests"],
+}
+
+cc_test {
+    name: "llvmlibc_stdlib_bsearch_test",
+    defaults: ["llvmlibc_test_defaults"],
+    srcs: ["test/src/stdlib/bsearch_test.cpp"],
 }
