@@ -25,12 +25,13 @@ cc_library_static {
     include_dirs: [
         "external/llvm-libc",
     ],
-    srcs: [
-        "src/stdlib/bsearch.cpp",
-    ],
     cppflags: [
         // Necessary for non-namespaced exports.
         "-DLIBC_COPT_PUBLIC_PACKAGING",
+        // LLVM_LIBC_FUNCTION_ATTR is applied to exported llvm-libc functions
+        // (e.g., memset, memcpy, ...). Since we link these definitions into
+        // shared objects that export them, we need default visibility.
+        "-DLLVM_LIBC_FUNCTION_ATTR=__attribute__((visibility(\"default\")))",
     ],
     // No C++ runtime.
     stl: "none",
@@ -52,6 +53,24 @@ cc_library_static {
 
     // When llvm-libc includes <stdlib.h>, use bionic's headers for these.
     header_libs: ["libc_headers"],
+
+    srcs: [
+        "src/stdlib/bsearch.cpp",
+        "src/string/strlcat.cpp",
+        "src/string/strlcpy.cpp",
+    ],
+    arch: {
+        x86_64: {
+            srcs: [
+                "src/string/memchr.cpp",
+                "src/string/memrchr.cpp",
+                "src/string/strchr.cpp",
+                "src/string/strchrnul.cpp",
+                "src/string/strnlen.cpp",
+                "src/string/strrchr.cpp",
+            ],
+        },
+    },
 }
 
 cc_test_library {
@@ -82,7 +101,25 @@ cc_defaults {
 }
 
 cc_test {
+    // TODO: rename test to simply llvmlibc_tests. Needs to go through a post
+    // submit cycle before can be renamed for presubmit.
     name: "llvmlibc_stdlib_bsearch_test",
     defaults: ["llvmlibc_test_defaults"],
-    srcs: ["test/src/stdlib/bsearch_test.cpp"],
+    srcs: [
+        "test/src/stdlib/bsearch_test.cpp",
+        "test/src/string/strlcat_test.cpp",
+        "test/src/string/strlcpy_test.cpp",
+    ],
+    arch: {
+        x86_64: {
+            srcs: [
+                "test/src/string/memchr_test.cpp",
+                "test/src/string/memrchr_test.cpp",
+                "test/src/string/strchr_test.cpp",
+                "test/src/string/strchrnul_test.cpp",
+                "test/src/string/strnlen_test.cpp",
+                "test/src/string/strrchr_test.cpp",
+            ],
+        },
+    },
 }
