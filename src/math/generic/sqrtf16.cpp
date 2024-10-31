@@ -1,4 +1,4 @@
-//===-- Implementation header for strlen ------------------------*- C++ -*-===//
+//===-- Implementation of sqrtf16 function --------------------------------===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,16 +6,15 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef LLVM_LIBC_SRC_STRING_STRLEN_H
-#define LLVM_LIBC_SRC_STRING_STRLEN_H
-
-#include "include/llvm-libc-types/size_t.h"
+#include "src/math/sqrtf16.h"
+#include "src/__support/FPUtil/sqrt.h"
+#include "src/__support/common.h"
 #include "src/__support/macros/config.h"
 
 namespace LIBC_NAMESPACE_DECL {
 
-size_t strlen(const char *src);
+LLVM_LIBC_FUNCTION(float16, sqrtf16, (float16 x)) {
+  return fputil::sqrt<float16>(x);
+}
 
 } // namespace LIBC_NAMESPACE_DECL
-
-#endif // LLVM_LIBC_SRC_STRING_STRLEN_H
