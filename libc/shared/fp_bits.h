@@ -1,4 +1,4 @@
-//===-- Implementation header for strlen ------------------------*- C++ -*-===//
+//===-- Floating point number utils -----------------------------*- C++ -*-===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,16 +6,17 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef LLVM_LIBC_SRC_STRING_STRLEN_H
-#define LLVM_LIBC_SRC_STRING_STRLEN_H
+#ifndef LLVM_LIBC_SHARED_FP_BITS_H
+#define LLVM_LIBC_SHARED_FP_BITS_H
 
-#include "include/llvm-libc-types/size_t.h"
-#include "src/__support/macros/config.h"
+#include "src/__support/FPUtil/FPBits.h"
 
 namespace LIBC_NAMESPACE_DECL {
+namespace shared {
 
-size_t strlen(const char *src);
+using fputil::FPBits;
 
+} // namespace shared
 } // namespace LIBC_NAMESPACE_DECL
 
-#endif // LLVM_LIBC_SRC_STRING_STRLEN_H
+#endif // LLVM_LIBC_SHARED_FP_BITS_H
