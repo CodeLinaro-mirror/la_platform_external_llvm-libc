@@ -1,4 +1,4 @@
-//===-- Utility class to test the issignaling macro  ------------*- C++ -*-===//
+//===-- Utility class to test different flavors of issignaling --*- C++ -*-===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,16 +6,18 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef LLVM_LIBC_TEST_INCLUDE_MATH_ISSIGNALING_H
-#define LLVM_LIBC_TEST_INCLUDE_MATH_ISSIGNALING_H
+#ifndef LLVM_LIBC_TEST_SRC_MATH_SMOKE_ISSIGNALINGTEST_H
+#define LLVM_LIBC_TEST_SRC_MATH_SMOKE_ISSIGNALINGTEST_H
 
+#include "test/UnitTest/FEnvSafeTest.h"
 #include "test/UnitTest/FPMatcher.h"
 #include "test/UnitTest/Test.h"
 
-#include "include/llvm-libc-macros/math-function-macros.h"
+#include "hdr/math_macros.h"
 
 template <typename T>
-class IsSignalingTest : public LIBC_NAMESPACE::testing::Test {
+class IsSignalingTest : public LIBC_NAMESPACE::testing::FEnvSafeTest {
+
   DECLARE_SPECIAL_CONSTANTS(T)
 
 public:
@@ -37,13 +39,22 @@ public:
     EXPECT_EQ(func(zero), 0);
     EXPECT_EQ(func(neg_zero), 0);
   }
+
+  void testRoundedNumbers(IsSignalingFunc func) {
+    EXPECT_EQ(func(T(1.0)), 0);
+    EXPECT_EQ(func(T(-1.0)), 0);
+    EXPECT_EQ(func(T(10.0)), 0);
+    EXPECT_EQ(func(T(-10.0)), 0);
+    EXPECT_EQ(func(T(1234.0)), 0);
+    EXPECT_EQ(func(T(-1234.0)), 0);
+  }
 };
 
 #define LIST_ISSIGNALING_TESTS(T, func)                                        \
   using LlvmLibcIsSignalingTest = IsSignalingTest<T>;                          \
   TEST_F(LlvmLibcIsSignalingTest, SpecialNumbers) {                            \
-    auto issignaling_func = [](T x) { return func(x); };                       \
-    testSpecialNumbers(issignaling_func);                                      \
-  }
+    testSpecialNumbers(&func);                                                 \
+  }                                                                            \
+  TEST_F(LlvmLibcIsSignalingTest, RoundedNubmers) { testRoundedNumbers(&func); }
 
-#endif // LLVM_LIBC_TEST_INCLUDE_MATH_ISSIGNALING_H
+#endif // LLVM_LIBC_TEST_SRC_MATH_SMOKE_ISSIGNALINGTEST_H
