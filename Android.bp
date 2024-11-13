@@ -9,8 +9,9 @@ cc_defaults {
     arch: {
         // TODO: https://github.com/llvm/llvm-project/issues/93738
         // llvm-libc does not (yet) support --target=armv7a-linux -mthumb
+        // Build in ARM mode, but perhaps revisit this in the future.
         arm: {
-            cppflags: ["-marm"],
+            instruction_set: "arm",
         },
     },
 }
