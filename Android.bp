@@ -7,11 +7,6 @@ cc_defaults {
         "-DLIBC_NAMESPACE=llvmlibc",
     ],
     arch: {
-        // TODO: https://github.com/llvm/llvm-project/issues/93709
-        // llvm-libc does not (yet) support 32b x86.
-        x86: {
-            enabled: false,
-        },
         // TODO: https://github.com/llvm/llvm-project/issues/93738
         // llvm-libc does not (yet) support --target=armv7a-linux -mthumb
         arm: {
