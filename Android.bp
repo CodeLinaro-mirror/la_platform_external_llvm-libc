@@ -60,6 +60,23 @@ cc_library_static {
 
     // When llvm-libc includes <stdlib.h>, use bionic's headers for these.
     header_libs: ["libc_headers"],
+
+    // TODO(b/378117947): push these into non-arch-specific `srcs` as llvm-libc
+    // functions are rolled out.
+    arch: {
+        x86_64: {
+            srcs: [
+                "src/string/memchr.cpp",
+                "src/string/memrchr.cpp",
+                "src/string/strchr.cpp",
+                "src/string/strchrnul.cpp",
+                "src/string/strlcat.cpp",
+                "src/string/strlcpy.cpp",
+                "src/string/strnlen.cpp",
+                "src/string/strrchr.cpp",
+            ],
+        },
+    },
 }
 
 cc_test_library {
@@ -95,4 +112,21 @@ cc_test {
     name: "llvmlibc_stdlib_bsearch_test",
     defaults: ["llvmlibc_test_defaults"],
     srcs: ["test/src/stdlib/bsearch_test.cpp"],
+
+    // TODO(b/378117947): push these into non-arch-specific `srcs` as llvm-libc
+    // functions are rolled out.
+    arch: {
+        x86_64: {
+            srcs: [
+                "test/src/string/memchr_test.cpp",
+                "test/src/string/memrchr_test.cpp",
+                "test/src/string/strchr_test.cpp",
+                "test/src/string/strchrnul_test.cpp",
+                "test/src/string/strlcat_test.cpp",
+                "test/src/string/strlcpy_test.cpp",
+                "test/src/string/strnlen_test.cpp",
+                "test/src/string/strrchr_test.cpp",
+            ],
+        },
+    },
 }
