@@ -32,6 +32,9 @@ cc_library_static {
     ],
     srcs: [
         "src/stdlib/bsearch.cpp",
+        "src/string/memrchr.cpp",
+        "src/string/strlcat.cpp",
+        "src/string/strlcpy.cpp",
     ],
     cppflags: [
         // Necessary for non-namespaced exports.
@@ -64,14 +67,19 @@ cc_library_static {
     // TODO(b/378117947): push these into non-arch-specific `srcs` as llvm-libc
     // functions are rolled out.
     arch: {
+        arm64: {
+            // These have optimized baseline and vectorized impls from
+            // arm-optimized-routines, and aren't yet heavily optimized by
+            // llvm-libc.
+            exclude_srcs: [
+                "src/string/memrchr.cpp",
+            ],
+        },
         x86_64: {
             srcs: [
                 "src/string/memchr.cpp",
-                "src/string/memrchr.cpp",
                 "src/string/strchr.cpp",
                 "src/string/strchrnul.cpp",
-                "src/string/strlcat.cpp",
-                "src/string/strlcpy.cpp",
                 "src/string/strnlen.cpp",
                 "src/string/strrchr.cpp",
             ],
@@ -111,19 +119,26 @@ cc_test {
     // submit cycle before can be renamed for presubmit.
     name: "llvmlibc_stdlib_bsearch_test",
     defaults: ["llvmlibc_test_defaults"],
-    srcs: ["test/src/stdlib/bsearch_test.cpp"],
-
-    // TODO(b/378117947): push these into non-arch-specific `srcs` as llvm-libc
-    // functions are rolled out.
+    srcs: [
+        "test/src/stdlib/bsearch_test.cpp",
+        "test/src/string/memrchr_test.cpp",
+        "test/src/string/strlcat_test.cpp",
+        "test/src/string/strlcpy_test.cpp",
+    ],
     arch: {
+        arm64: {
+            // Match exclusions in ':llvmlibc' for arm64.
+            exclude_srcs: [
+                "test/src/string/memrchr_test.cpp",
+            ],
+        },
         x86_64: {
+            // TODO(b/378117947): push these into non-arch-specific `srcs` as
+            // llvm-libc functions are rolled out.
             srcs: [
                 "test/src/string/memchr_test.cpp",
-                "test/src/string/memrchr_test.cpp",
                 "test/src/string/strchr_test.cpp",
                 "test/src/string/strchrnul_test.cpp",
-                "test/src/string/strlcat_test.cpp",
-                "test/src/string/strlcpy_test.cpp",
                 "test/src/string/strnlen_test.cpp",
                 "test/src/string/strrchr_test.cpp",
             ],
