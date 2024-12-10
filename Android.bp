@@ -86,7 +86,10 @@ cc_library_static {
     vendor_ramdisk_available: true,
 
     // Bionic's dependencies must also set this.
-    apex_available: ["com.android.runtime"],
+    apex_available: [
+        "//apex_available:platform",
+        "com.android.runtime",
+    ],
 
     // When llvm-libc includes <stdlib.h>, use bionic's headers for these.
     header_libs: ["libc_headers"],
