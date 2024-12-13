@@ -36,6 +36,7 @@ cc_library_static {
         "src/string/strchrnul.cpp",
         "src/string/strlcat.cpp",
         "src/string/strlcpy.cpp",
+        "src/string/strnlen.cpp",
         "src/string/strrchr.cpp",
     ],
     cppflags: [
@@ -76,14 +77,21 @@ cc_library_static {
             exclude_srcs: [
                 "src/string/memrchr.cpp",
                 "src/string/strchrnul.cpp",
+                "src/string/strnlen.cpp",
                 "src/string/strrchr.cpp",
+            ],
+        },
+        riscv64: {
+            // These have hand-vectorized impls in Bionic, and aren't yet
+            // heavily optimized by llvm-libc.
+            exclude_srcs: [
+                "src/string/strnlen.cpp",
             ],
         },
         x86_64: {
             srcs: [
                 "src/string/memchr.cpp",
                 "src/string/strchr.cpp",
-                "src/string/strnlen.cpp",
             ],
         },
     },
@@ -127,6 +135,7 @@ cc_test {
         "test/src/string/strchrnul_test.cpp",
         "test/src/string/strlcat_test.cpp",
         "test/src/string/strlcpy_test.cpp",
+        "test/src/string/strnlen_test.cpp",
         "test/src/string/strrchr_test.cpp",
     ],
     arch: {
@@ -135,7 +144,14 @@ cc_test {
             exclude_srcs: [
                 "test/src/string/memrchr_test.cpp",
                 "test/src/string/strchrnul_test.cpp",
+                "test/src/string/strnlen_test.cpp",
                 "test/src/string/strrchr_test.cpp",
+            ],
+        },
+        riscv64: {
+            // Match exclusions in ':llvmlibc' for riscv64.
+            exclude_srcs: [
+                "test/src/string/strnlen_test.cpp",
             ],
         },
         x86_64: {
@@ -144,7 +160,6 @@ cc_test {
             srcs: [
                 "test/src/string/memchr_test.cpp",
                 "test/src/string/strchr_test.cpp",
-                "test/src/string/strnlen_test.cpp",
             ],
         },
     },
