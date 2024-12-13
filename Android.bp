@@ -33,6 +33,7 @@ cc_library_static {
     srcs: [
         "src/stdlib/bsearch.cpp",
         "src/string/memrchr.cpp",
+        "src/string/strchrnul.cpp",
         "src/string/strlcat.cpp",
         "src/string/strlcpy.cpp",
         "src/string/strrchr.cpp",
@@ -74,6 +75,7 @@ cc_library_static {
             // llvm-libc.
             exclude_srcs: [
                 "src/string/memrchr.cpp",
+                "src/string/strchrnul.cpp",
                 "src/string/strrchr.cpp",
             ],
         },
@@ -81,7 +83,6 @@ cc_library_static {
             srcs: [
                 "src/string/memchr.cpp",
                 "src/string/strchr.cpp",
-                "src/string/strchrnul.cpp",
                 "src/string/strnlen.cpp",
             ],
         },
@@ -123,6 +124,7 @@ cc_test {
     srcs: [
         "test/src/stdlib/bsearch_test.cpp",
         "test/src/string/memrchr_test.cpp",
+        "test/src/string/strchrnul_test.cpp",
         "test/src/string/strlcat_test.cpp",
         "test/src/string/strlcpy_test.cpp",
         "test/src/string/strrchr_test.cpp",
@@ -132,6 +134,7 @@ cc_test {
             // Match exclusions in ':llvmlibc' for arm64.
             exclude_srcs: [
                 "test/src/string/memrchr_test.cpp",
+                "test/src/string/strchrnul_test.cpp",
                 "test/src/string/strrchr_test.cpp",
             ],
         },
@@ -141,7 +144,6 @@ cc_test {
             srcs: [
                 "test/src/string/memchr_test.cpp",
                 "test/src/string/strchr_test.cpp",
-                "test/src/string/strchrnul_test.cpp",
                 "test/src/string/strnlen_test.cpp",
             ],
         },
