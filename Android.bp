@@ -2,20 +2,21 @@
 
 cc_defaults {
     name: "llvmlibc_defaults",
+    defaults: [
+        // b/379681564: Bionic's dependencies all must support linux-bionic,
+        // which is not an enabled target by default.
+        "linux_bionic_supported",
+    ],
     cppflags: [
         // Necessary to build.
         "-DLIBC_NAMESPACE=llvmlibc",
     ],
     arch: {
-        // TODO: https://github.com/llvm/llvm-project/issues/93709
-        // llvm-libc does not (yet) support 32b x86.
-        x86: {
-            enabled: false,
-        },
         // TODO: https://github.com/llvm/llvm-project/issues/93738
         // llvm-libc does not (yet) support --target=armv7a-linux -mthumb
+        // Build in ARM mode, but perhaps revisit this in the future.
         arm: {
-            cppflags: ["-marm"],
+            instruction_set: "arm",
         },
     },
 }
@@ -31,10 +32,20 @@ cc_library_static {
     ],
     srcs: [
         "src/stdlib/bsearch.cpp",
+        "src/string/memrchr.cpp",
+        "src/string/strchr.cpp",
+        "src/string/strchrnul.cpp",
+        "src/string/strlcat.cpp",
+        "src/string/strlcpy.cpp",
+        "src/string/strnlen.cpp",
+        "src/string/strrchr.cpp",
     ],
     cppflags: [
         // Necessary for non-namespaced exports.
         "-DLIBC_COPT_PUBLIC_PACKAGING",
+        // TODO: remove when https://github.com/llvm/llvm-project/pull/116686 is
+        // integrated.
+        "-DLLVM_LIBC_FUNCTION_ATTR=__attribute__((visibility(\"default\")))",
     ],
     // No C++ runtime.
     stl: "none",
@@ -56,6 +67,36 @@ cc_library_static {
 
     // When llvm-libc includes <stdlib.h>, use bionic's headers for these.
     header_libs: ["libc_headers"],
+
+    // TODO(b/378117947): push these into non-arch-specific `srcs` as llvm-libc
+    // functions are rolled out.
+    arch: {
+        arm64: {
+            // These have optimized baseline and vectorized impls from
+            // arm-optimized-routines, and aren't yet heavily optimized by
+            // llvm-libc.
+            exclude_srcs: [
+                "src/string/memrchr.cpp",
+                "src/string/strchr.cpp",
+                "src/string/strchrnul.cpp",
+                "src/string/strnlen.cpp",
+                "src/string/strrchr.cpp",
+            ],
+        },
+        riscv64: {
+            // These have hand-vectorized impls in Bionic, and aren't yet
+            // heavily optimized by llvm-libc.
+            exclude_srcs: [
+                "src/string/strchr.cpp",
+                "src/string/strnlen.cpp",
+            ],
+        },
+        x86_64: {
+            srcs: [
+                "src/string/memchr.cpp",
+            ],
+        },
+    },
 }
 
 cc_test_library {
@@ -86,7 +127,44 @@ cc_defaults {
 }
 
 cc_test {
+    // TODO: rename test to simply llvmlibc_tests. Needs to go through a post
+    // submit cycle before can be renamed for presubmit.
     name: "llvmlibc_stdlib_bsearch_test",
     defaults: ["llvmlibc_test_defaults"],
-    srcs: ["test/src/stdlib/bsearch_test.cpp"],
+    srcs: [
+        "test/src/stdlib/bsearch_test.cpp",
+        "test/src/string/memrchr_test.cpp",
+        "test/src/string/strchr_test.cpp",
+        "test/src/string/strchrnul_test.cpp",
+        "test/src/string/strlcat_test.cpp",
+        "test/src/string/strlcpy_test.cpp",
+        "test/src/string/strnlen_test.cpp",
+        "test/src/string/strrchr_test.cpp",
+    ],
+    arch: {
+        arm64: {
+            // Match exclusions in ':llvmlibc' for arm64.
+            exclude_srcs: [
+                "test/src/string/memrchr_test.cpp",
+                "test/src/string/strchr_test.cpp",
+                "test/src/string/strchrnul_test.cpp",
+                "test/src/string/strnlen_test.cpp",
+                "test/src/string/strrchr_test.cpp",
+            ],
+        },
+        riscv64: {
+            // Match exclusions in ':llvmlibc' for riscv64.
+            exclude_srcs: [
+                "test/src/string/strchr_test.cpp",
+                "test/src/string/strnlen_test.cpp",
+            ],
+        },
+        x86_64: {
+            // TODO(b/378117947): push these into non-arch-specific `srcs` as
+            // llvm-libc functions are rolled out.
+            srcs: [
+                "test/src/string/memchr_test.cpp",
+            ],
+        },
+    },
 }
