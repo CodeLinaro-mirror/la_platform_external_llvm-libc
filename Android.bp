@@ -32,6 +32,7 @@ cc_library_static {
     ],
     srcs: [
         "src/stdlib/bsearch.cpp",
+        "src/string/memchr.cpp",
         "src/string/memrchr.cpp",
         "src/string/strchr.cpp",
         "src/string/strchrnul.cpp",
@@ -76,6 +77,7 @@ cc_library_static {
             // arm-optimized-routines, and aren't yet heavily optimized by
             // llvm-libc.
             exclude_srcs: [
+                "src/string/memchr.cpp",
                 "src/string/memrchr.cpp",
                 "src/string/strchr.cpp",
                 "src/string/strchrnul.cpp",
@@ -87,13 +89,9 @@ cc_library_static {
             // These have hand-vectorized impls in Bionic, and aren't yet
             // heavily optimized by llvm-libc.
             exclude_srcs: [
+                "src/string/memchr.cpp",
                 "src/string/strchr.cpp",
                 "src/string/strnlen.cpp",
-            ],
-        },
-        x86_64: {
-            srcs: [
-                "src/string/memchr.cpp",
             ],
         },
     },
@@ -133,6 +131,7 @@ cc_test {
     defaults: ["llvmlibc_test_defaults"],
     srcs: [
         "test/src/stdlib/bsearch_test.cpp",
+        "test/src/string/memchr_test.cpp",
         "test/src/string/memrchr_test.cpp",
         "test/src/string/strchr_test.cpp",
         "test/src/string/strchrnul_test.cpp",
@@ -145,6 +144,7 @@ cc_test {
         arm64: {
             // Match exclusions in ':llvmlibc' for arm64.
             exclude_srcs: [
+                "test/src/string/memchr_test.cpp",
                 "test/src/string/memrchr_test.cpp",
                 "test/src/string/strchr_test.cpp",
                 "test/src/string/strchrnul_test.cpp",
@@ -155,15 +155,9 @@ cc_test {
         riscv64: {
             // Match exclusions in ':llvmlibc' for riscv64.
             exclude_srcs: [
+                "test/src/string/memchr_test.cpp",
                 "test/src/string/strchr_test.cpp",
                 "test/src/string/strnlen_test.cpp",
-            ],
-        },
-        x86_64: {
-            // TODO(b/378117947): push these into non-arch-specific `srcs` as
-            // llvm-libc functions are rolled out.
-            srcs: [
-                "test/src/string/memchr_test.cpp",
             ],
         },
     },
