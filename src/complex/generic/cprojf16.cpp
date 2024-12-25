@@ -1,4 +1,4 @@
-//===-- Implementation header for dup3 --------------------------*- C++ -*-===//
+//===-- Implementation of cprojf16 function -------------------------------===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,16 +6,18 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef LLVM_LIBC_SRC_UNISTD_DUP3_H
-#define LLVM_LIBC_SRC_UNISTD_DUP3_H
+#include "src/complex/cprojf16.h"
+#if defined(LIBC_TYPES_HAS_CFLOAT16)
 
-#include "hdr/unistd_macros.h"
-#include "src/__support/macros/config.h"
+#include "src/__support/common.h"
+#include "src/__support/complex_type.h"
 
 namespace LIBC_NAMESPACE_DECL {
 
-int dup3(int oldfd, int newfd, int flags);
+LLVM_LIBC_FUNCTION(cfloat16, cprojf16, (cfloat16 x)) {
+  return project<cfloat16>(x);
+}
 
 } // namespace LIBC_NAMESPACE_DECL
 
-#endif // LLVM_LIBC_SRC_UNISTD_DUP3_H
+#endif // LIBC_TYPES_HAS_CFLOAT16
