@@ -1,4 +1,4 @@
-//===-- Implementation header for RPC functions -----------------*- C++ -*-===//
+//===-- Implementation of cprojl function ---------------------------------===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,16 +6,14 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef LLVM_LIBC_SRC_GPU_RPC_HOST_CALL_H
-#define LLVM_LIBC_SRC_GPU_RPC_HOST_CALL_H
-
-#include "src/__support/macros/config.h"
-#include <stddef.h> // size_t
+#include "src/complex/cprojl.h"
+#include "src/__support/common.h"
+#include "src/__support/complex_type.h"
 
 namespace LIBC_NAMESPACE_DECL {
 
-unsigned long long rpc_host_call(void *fn, void *buffer, size_t size);
+LLVM_LIBC_FUNCTION(_Complex long double, cprojl, (_Complex long double x)) {
+  return project<_Complex long double>(x);
+}
 
 } // namespace LIBC_NAMESPACE_DECL
-
-#endif // LLVM_LIBC_SRC_GPU_RPC_HOST_CALL_H
