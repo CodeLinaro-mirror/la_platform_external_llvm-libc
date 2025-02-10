@@ -125,8 +125,46 @@ cc_defaults {
 }
 
 cc_test {
-    // TODO: rename test to simply llvmlibc_tests. Needs to go through a post
-    // submit cycle before can be renamed for presubmit.
+    name: "llvmlibc_tests",
+    defaults: ["llvmlibc_test_defaults"],
+    srcs: [
+        "test/src/stdlib/bsearch_test.cpp",
+        "test/src/string/memchr_test.cpp",
+        "test/src/string/memrchr_test.cpp",
+        "test/src/string/strchr_test.cpp",
+        "test/src/string/strchrnul_test.cpp",
+        "test/src/string/strlcat_test.cpp",
+        "test/src/string/strlcpy_test.cpp",
+        "test/src/string/strnlen_test.cpp",
+        "test/src/string/strrchr_test.cpp",
+    ],
+    arch: {
+        arm64: {
+            // Match exclusions in ':llvmlibc' for arm64.
+            exclude_srcs: [
+                "test/src/string/memchr_test.cpp",
+                "test/src/string/memrchr_test.cpp",
+                "test/src/string/strchr_test.cpp",
+                "test/src/string/strchrnul_test.cpp",
+                "test/src/string/strnlen_test.cpp",
+                "test/src/string/strrchr_test.cpp",
+            ],
+        },
+        riscv64: {
+            // Match exclusions in ':llvmlibc' for riscv64.
+            exclude_srcs: [
+                "test/src/string/memchr_test.cpp",
+                "test/src/string/strchr_test.cpp",
+                "test/src/string/strnlen_test.cpp",
+            ],
+        },
+    },
+}
+
+cc_test {
+    // TODO: delete this duplicate entry once llvmlibc_tests has been moved
+    // from post submit to presubmit.
+    // go/test-mapping-slo-guide
     name: "llvmlibc_stdlib_bsearch_test",
     defaults: ["llvmlibc_test_defaults"],
     srcs: [
