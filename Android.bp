@@ -125,9 +125,7 @@ cc_defaults {
 }
 
 cc_test {
-    // TODO: rename test to simply llvmlibc_tests. Needs to go through a post
-    // submit cycle before can be renamed for presubmit.
-    name: "llvmlibc_stdlib_bsearch_test",
+    name: "llvmlibc_tests",
     defaults: ["llvmlibc_test_defaults"],
     srcs: [
         "test/src/stdlib/bsearch_test.cpp",
