@@ -4,7 +4,7 @@
       "name": "CtsBionicTestCases"
     },
     {
-      "name": "llvmlibc_stdlib_bsearch_test",
+      "name": "llvmlibc_tests",
       "options": [ { "native-test-flag": "--gtest_color=no"} ]
     }
   ]
