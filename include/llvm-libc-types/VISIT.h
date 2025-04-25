@@ -1,4 +1,4 @@
-//===-- Definition of type __lsearchcompare_t -----------------------------===//
+//===-- Definition of VISIT type ------------------------------------------===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,9 +6,9 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef LLVM_LIBC_TYPES___LSEARCHCOMPARE_T_H
-#define LLVM_LIBC_TYPES___LSEARCHCOMPARE_T_H
+#ifndef LLVM_LIBC_TYPES_VISIT_H
+#define LLVM_LIBC_TYPES_VISIT_H
 
-typedef int (*__lsearchcompare_t)(const void *, const void *);
+typedef enum { preorder, postorder, endorder, leaf } VISIT;
 
-#endif // LLVM_LIBC_TYPES___LSEARCHCOMPARE_T_H
+#endif // LLVM_LIBC_TYPES_VISIT_H
