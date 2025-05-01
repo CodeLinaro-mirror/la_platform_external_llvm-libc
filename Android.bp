@@ -31,6 +31,8 @@ cc_library_static {
         "external/llvm-libc",
     ],
     srcs: [
+        "src/search/lfind.cpp",
+        "src/search/lsearch.cpp",
         "src/stdlib/bsearch.cpp",
         "src/string/memchr.cpp",
         "src/string/memrchr.cpp",
@@ -128,6 +130,8 @@ cc_test {
     name: "llvmlibc_tests",
     defaults: ["llvmlibc_test_defaults"],
     srcs: [
+        "test/src/search/lfind_test.cpp",
+        "test/src/search/lsearch_test.cpp",
         "test/src/stdlib/bsearch_test.cpp",
         "test/src/string/memchr_test.cpp",
         "test/src/string/memrchr_test.cpp",
