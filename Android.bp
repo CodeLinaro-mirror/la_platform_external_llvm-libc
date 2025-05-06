@@ -1,5 +1,3 @@
-// https://ci.android.com/builds/latest/branches/aosp-build-tools/targets/linux/view/soong_build.html
-
 cc_defaults {
     name: "llvmlibc_defaults",
     defaults: [
