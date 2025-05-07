@@ -1,4 +1,4 @@
-//===-- Definition of type __bsearchcompare_t -----------------------------===//
+//===-- Unittests for idivlr ----------------------------------------------===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,9 +6,9 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef LLVM_LIBC_TYPES___BSEARCHCOMPARE_T_H
-#define LLVM_LIBC_TYPES___BSEARCHCOMPARE_T_H
+#include "IdivTest.h"
 
-typedef int (*__bsearchcompare_t)(const void *, const void *);
+#include "llvm-libc-macros/stdfix-macros.h" // long fract
+#include "src/stdfix/idivlr.h"
 
-#endif // LLVM_LIBC_TYPES___BSEARCHCOMPARE_T_H
+LIST_IDIV_TESTS(lr, long fract, long int, LIBC_NAMESPACE::idivlr);
