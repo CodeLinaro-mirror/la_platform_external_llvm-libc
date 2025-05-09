@@ -12,6 +12,11 @@ cc_defaults {
     cppflags: [
         // Necessary to build.
         "-DLIBC_NAMESPACE=llvmlibc",
+
+        // Necessary for non-namespaced exports.
+        "-DLIBC_COPT_PUBLIC_PACKAGING",
+        // ...which then makes this necessary to keep using bionic's errno.
+        "-DLIBC_ERRNO_MODE=LIBC_ERRNO_MODE_SYSTEM_INLINE",
     ],
 }
 
@@ -25,11 +30,20 @@ cc_library_static {
         "external/llvm-libc",
     ],
     srcs: [
+        "src/__support/CPP/new.cpp",
+
         "src/inttypes/imaxabs.cpp",
         "src/inttypes/imaxdiv.cpp",
+        "src/search/hcreate.cpp",
+        "src/search/hcreate_r.cpp",
+        "src/search/hdestroy.cpp",
+        "src/search/hdestroy_r.cpp",
+        "src/search/hsearch/global.cpp",
+        "src/search/hsearch.cpp",
+        "src/search/hsearch_r.cpp",
+        "src/search/insque.cpp",
         "src/search/lfind.cpp",
         "src/search/lsearch.cpp",
-        "src/search/insque.cpp",
         "src/search/remque.cpp",
         "src/stdlib/abs.cpp",
         "src/stdlib/bsearch.cpp",
@@ -80,8 +94,6 @@ cc_library_static {
         "src/wchar/wmemset.cpp",
     ],
     cppflags: [
-        // Necessary for non-namespaced exports.
-        "-DLIBC_COPT_PUBLIC_PACKAGING",
         // See https://github.com/llvm/llvm-project/pull/116686.
         "-DLLVM_LIBC_FUNCTION_ATTR=__attribute__((visibility(\"default\")))",
     ],
@@ -138,6 +150,8 @@ cc_test_library {
     name: "llvmlibc_test_harness",
     defaults: ["llvmlibc_defaults"],
     srcs: [
+        "src/__support/StringUtil/error_to_string.cpp",
+
         "test/UnitTest/LibcTest.cpp",
         "test/UnitTest/TestLogger.cpp",
         "test/UnitTest/LibcTestMain.cpp",
@@ -167,9 +181,10 @@ cc_test {
     srcs: [
         "test/src/inttypes/imaxabs_test.cpp",
         "test/src/inttypes/imaxdiv_test.cpp",
+        "test/src/search/hsearch_test.cpp",
+        "test/src/search/insque_test.cpp",
         "test/src/search/lfind_test.cpp",
         "test/src/search/lsearch_test.cpp",
-        "test/src/search/insque_test.cpp",
         "test/src/stdlib/abs_test.cpp",
         "test/src/stdlib/bsearch_test.cpp",
         "test/src/stdlib/div_test.cpp",
