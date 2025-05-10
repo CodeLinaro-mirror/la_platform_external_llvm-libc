@@ -1,5 +1,3 @@
-// https://ci.android.com/builds/latest/branches/aosp-build-tools/targets/linux/view/soong_build.html
-
 cc_defaults {
     name: "llvmlibc_defaults",
     defaults: [
@@ -11,14 +9,6 @@ cc_defaults {
         // Necessary to build.
         "-DLIBC_NAMESPACE=llvmlibc",
     ],
-    arch: {
-        // TODO: https://github.com/llvm/llvm-project/issues/93738
-        // llvm-libc does not (yet) support --target=armv7a-linux -mthumb
-        // Build in ARM mode, but perhaps revisit this in the future.
-        arm: {
-            instruction_set: "arm",
-        },
-    },
 }
 
 cc_library_static {
