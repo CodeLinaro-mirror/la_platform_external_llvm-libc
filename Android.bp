@@ -1,3 +1,7 @@
+// Use this command to manually trigger a run if you don't want to wait a week:
+// $ /google/bin/releases/copybara/public/copybara/copybara service trigger /google/src/head/depot/google3/wireless/android/android_native_team/copy.bara.sky default
+// (See go/copybara-service-commands#trigger for more.)
+
 cc_defaults {
     name: "llvmlibc_defaults",
     defaults: [
@@ -48,8 +52,7 @@ cc_library_static {
     cppflags: [
         // Necessary for non-namespaced exports.
         "-DLIBC_COPT_PUBLIC_PACKAGING",
-        // TODO: remove when https://github.com/llvm/llvm-project/pull/116686 is
-        // integrated.
+        // See https://github.com/llvm/llvm-project/pull/116686.
         "-DLLVM_LIBC_FUNCTION_ATTR=__attribute__((visibility(\"default\")))",
     ],
     // No C++ runtime.
