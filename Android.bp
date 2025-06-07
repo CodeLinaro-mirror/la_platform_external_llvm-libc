@@ -48,6 +48,7 @@ cc_library_static {
         "src/string/strlcpy.cpp",
         "src/string/strnlen.cpp",
         "src/string/strrchr.cpp",
+        "src/wchar/wcschr.cpp",
     ],
     cppflags: [
         // Necessary for non-namespaced exports.
@@ -156,6 +157,7 @@ cc_test {
         "test/src/string/strlcpy_test.cpp",
         "test/src/string/strnlen_test.cpp",
         "test/src/string/strrchr_test.cpp",
+        "test/src/wchar/wcschr_test.cpp",
     ],
     arch: {
         arm64: {
