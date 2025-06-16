@@ -57,6 +57,8 @@ cc_library_static {
         "src/wchar/wcsncmp.cpp",
         "src/wchar/wcsncpy.cpp",
         "src/wchar/wcspbrk.cpp",
+        "src/wchar/wcsrchr.cpp",
+        "src/wchar/wcsspn.cpp",
         "src/wchar/wcsstr.cpp",
     ],
     cppflags: [
@@ -175,6 +177,8 @@ cc_test {
         "test/src/wchar/wcsncmp_test.cpp",
         "test/src/wchar/wcsncpy_test.cpp",
         "test/src/wchar/wcspbrk_test.cpp",
+        "test/src/wchar/wcsrchr_test.cpp",
+        "test/src/wchar/wcsspn_test.cpp",
         "test/src/wchar/wcsstr_test.cpp",
     ],
     arch: {
