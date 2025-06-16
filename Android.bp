@@ -60,6 +60,7 @@ cc_library_static {
         "src/wchar/wcsrchr.cpp",
         "src/wchar/wcsspn.cpp",
         "src/wchar/wcsstr.cpp",
+        "src/wchar/wmemchr.cpp",
     ],
     cppflags: [
         // Necessary for non-namespaced exports.
@@ -180,6 +181,7 @@ cc_test {
         "test/src/wchar/wcsrchr_test.cpp",
         "test/src/wchar/wcsspn_test.cpp",
         "test/src/wchar/wcsstr_test.cpp",
+        "test/src/wchar/wmemchr_test.cpp",
     ],
     arch: {
         arm64: {
