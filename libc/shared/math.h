@@ -1,4 +1,4 @@
-//===-- Definition of size_t types ----------------------------------------===//
+//===-- Floating point math functions ---------------------------*- C++ -*-===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,9 +6,11 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef LLVM_LIBC_TYPES_SIZE_T_H
-#define LLVM_LIBC_TYPES_SIZE_T_H
+#ifndef LLVM_LIBC_SHARED_MATH_H
+#define LLVM_LIBC_SHARED_MATH_H
 
-typedef __SIZE_TYPE__ size_t;
+#include "libc_common.h"
 
-#endif // LLVM_LIBC_TYPES_SIZE_T_H
+#include "math/expf.h"
+
+#endif // LLVM_LIBC_SHARED_MATH_H
