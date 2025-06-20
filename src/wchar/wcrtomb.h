@@ -1,4 +1,4 @@
-//===-- Baremetal Implementation of putchar -------------------------------===//
+//===-- Implementation header for wcrtomb -----------------------*- C++ -*-===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,19 +6,18 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "src/stdio/putchar.h"
-#include "src/__support/CPP/string_view.h"
-#include "src/__support/OSUtil/io.h"
+#ifndef LLVM_LIBC_SRC_WCHAR_WCRTOMB_H
+#define LLVM_LIBC_SRC_WCHAR_WCRTOMB_H
+
+#include "hdr/types/mbstate_t.h"
+#include "hdr/types/size_t.h"
+#include "hdr/types/wchar_t.h"
 #include "src/__support/macros/config.h"
 
 namespace LIBC_NAMESPACE_DECL {
 
-LLVM_LIBC_FUNCTION(int, putchar, (int c)) {
-  char uc = static_cast<char>(c);
-
-  write_to_stdout(cpp::string_view(&uc, 1));
-
-  return 0;
-}
+size_t wcrtomb(char *__restrict s, wchar_t wc, mbstate_t *__restrict ps);
 
 } // namespace LIBC_NAMESPACE_DECL
+
+#endif // LLVM_LIBC_SRC_WCHAR_WCRTOMB_H
