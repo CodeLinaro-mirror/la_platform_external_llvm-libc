@@ -63,6 +63,8 @@ cc_library_static {
         "src/wchar/wmemchr.cpp",
         "src/wchar/wmemcmp.cpp",
         "src/wchar/wmemcpy.cpp",
+        "src/wchar/wmemmove.cpp",
+        "src/wchar/wmemset.cpp",
     ],
     cppflags: [
         // Necessary for non-namespaced exports.
@@ -186,6 +188,8 @@ cc_test {
         "test/src/wchar/wmemchr_test.cpp",
         "test/src/wchar/wmemcmp_test.cpp",
         "test/src/wchar/wmemcpy_test.cpp",
+        "test/src/wchar/wmemmove_test.cpp",
+        "test/src/wchar/wmemset_test.cpp",
     ],
     arch: {
         arm64: {
