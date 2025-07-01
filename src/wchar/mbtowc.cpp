@@ -1,4 +1,4 @@
-//===-- Implementation of mbrtowc -----------------------------------------===//
+//===-- Implementation of mbtowc -----------------------------------------===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,9 +6,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "src/wchar/mbrtowc.h"
+#include "src/wchar/mbtowc.h"
 
-#include "hdr/types/mbstate_t.h"
 #include "hdr/types/size_t.h"
 #include "hdr/types/wchar_t.h"
 #include "src/__support/common.h"
@@ -19,20 +18,23 @@
 
 namespace LIBC_NAMESPACE_DECL {
 
-LLVM_LIBC_FUNCTION(size_t, mbrtowc,
-                   (wchar_t *__restrict pwc, const char *__restrict s, size_t n,
-                    mbstate_t *__restrict ps)) {
-  static internal::mbstate internal_mbstate;
-  auto ret = internal::mbrtowc(pwc, s, n,
-                               ps == nullptr
-                                   ? &internal_mbstate
-                                   : reinterpret_cast<internal::mbstate *>(ps));
-  if (!ret.has_value()) {
+LLVM_LIBC_FUNCTION(int, mbtowc,
+                   (wchar_t *__restrict pwc, const char *__restrict s,
+                    size_t n)) {
+  // returns 0 since UTF-8 encoding is not state-dependent
+  if (s == nullptr)
+    return 0;
+  internal::mbstate internal_mbstate;
+  // temp ptr to use if pwc is nullptr
+  wchar_t buf[1];
+  auto ret =
+      internal::mbrtowc(pwc == nullptr ? buf : pwc, s, n, &internal_mbstate);
+  if (!ret.has_value() || static_cast<int>(ret.value()) == -2) {
     // Encoding failure
-    libc_errno = ret.error();
+    libc_errno = EILSEQ;
     return -1;
   }
-  return ret.value();
+  return static_cast<int>(ret.value());
 }
 
 } // namespace LIBC_NAMESPACE_DECL
