@@ -1,4 +1,4 @@
-//===-- String to integer conversion utils ----------------------*- C++ -*-===//
+//===-- Widechar string to integer conversion utils -------------*- C++ -*-===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,14 +6,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-// -----------------------------------------------------------------------------
-//                               **** WARNING ****
-// This file is shared with libc++. You should also be careful when adding
-// dependencies to this file, since it needs to build for all libc++ targets.
-// -----------------------------------------------------------------------------
-
-#ifndef LLVM_LIBC_SRC___SUPPORT_STR_TO_INTEGER_H
-#define LLVM_LIBC_SRC___SUPPORT_STR_TO_INTEGER_H
+#ifndef LLVM_LIBC_SRC___SUPPORT_WCS_TO_INTEGER_H
+#define LLVM_LIBC_SRC___SUPPORT_WCS_TO_INTEGER_H
 
 #include "hdr/errno_macros.h" // For ERANGE
 #include "src/__support/CPP/limits.h"
@@ -21,21 +15,21 @@
 #include "src/__support/CPP/type_traits/make_unsigned.h"
 #include "src/__support/big_int.h"
 #include "src/__support/common.h"
-#include "src/__support/ctype_utils.h"
 #include "src/__support/macros/config.h"
 #include "src/__support/str_to_num_result.h"
 #include "src/__support/uint128.h"
+#include "src/__support/wctype_utils.h"
 
 namespace LIBC_NAMESPACE_DECL {
 namespace internal {
 
-// Returns the idx to the first character in src that is not a whitespace
-// character (as determined by isspace())
+// Returns the idx of the first character in src that is not a whitespace
+// character (as determined by iswspace())
 LIBC_INLINE size_t
-first_non_whitespace(const char *__restrict src,
+first_non_whitespace(const wchar_t *__restrict src,
                      size_t src_len = cpp::numeric_limits<size_t>::max()) {
   size_t src_cur = 0;
-  while (src_cur < src_len && internal::isspace(src[src_cur])) {
+  while (src_cur < src_len && internal::iswspace(src[src_cur])) {
     ++src_cur;
   }
   return src_cur;
@@ -44,17 +38,17 @@ first_non_whitespace(const char *__restrict src,
 // checks if the next 3 characters of the string pointer are the start of a
 // hexadecimal number. Does not advance the string pointer.
 LIBC_INLINE bool
-is_hex_start(const char *__restrict src,
+is_hex_start(const wchar_t *__restrict src,
              size_t src_len = cpp::numeric_limits<size_t>::max()) {
   if (src_len < 3)
     return false;
-  return *src == '0' && tolower(*(src + 1)) == 'x' && isalnum(*(src + 2)) &&
-         b36_char_to_int(*(src + 2)) < 16;
+  return *src == L'0' && towlower(*(src + 1)) == L'x' && iswalnum(*(src + 2)) &&
+         b36_wchar_to_int(*(src + 2)) < 16;
 }
 
 // Takes the address of the string pointer and parses the base from the start of
 // it.
-LIBC_INLINE int infer_base(const char *__restrict src, size_t src_len) {
+LIBC_INLINE int infer_base(const wchar_t *__restrict src, size_t src_len) {
   // A hexadecimal number is defined as "the prefix 0x or 0X followed by a
   // sequence of the decimal digits and the letters a (or A) through f (or F)
   // with values 10 through 15 respectively." (C standard 6.4.4.1)
@@ -63,23 +57,16 @@ LIBC_INLINE int infer_base(const char *__restrict src, size_t src_len) {
   // An octal number is defined as "the prefix 0 optionally followed by a
   // sequence of the digits 0 through 7 only" (C standard 6.4.4.1) and so any
   // number that starts with 0, including just 0, is an octal number.
-  if (src_len > 0 && src[0] == '0')
+  if (src_len > 0 && src[0] == L'0')
     return 8;
   // A decimal number is defined as beginning "with a nonzero digit and
   // consist[ing] of a sequence of decimal digits." (C standard 6.4.4.1)
   return 10;
 }
 
-// -----------------------------------------------------------------------------
-//                               **** WARNING ****
-// This interface is shared with libc++, if you change this interface you need
-// to update it in both libc and libc++.
-// -----------------------------------------------------------------------------
-// Takes a pointer to a string and the base to convert to. This function is used
-// as the backend for all of the string to int functions.
 template <class T>
 LIBC_INLINE StrToNumResult<T>
-strtointeger(const char *__restrict src, int base,
+wcstointeger(const wchar_t *__restrict src, int base,
              const size_t src_len = cpp::numeric_limits<size_t>::max()) {
   using ResultType = make_integral_or_big_int_unsigned_t<T>;
 
@@ -97,8 +84,8 @@ strtointeger(const char *__restrict src, int base,
 
   src_cur = first_non_whitespace(src, src_len);
 
-  char result_sign = '+';
-  if (src[src_cur] == '+' || src[src_cur] == '-') {
+  wchar_t result_sign = L'+';
+  if (src[src_cur] == L'+' || src[src_cur] == L'-') {
     result_sign = src[src_cur];
     ++src_cur;
   }
@@ -110,7 +97,7 @@ strtointeger(const char *__restrict src, int base,
     src_cur = src_cur + 2;
 
   constexpr bool IS_UNSIGNED = cpp::is_unsigned_v<T>;
-  const bool is_positive = (result_sign == '+');
+  const bool is_positive = (result_sign == L'+');
 
   ResultType constexpr NEGATIVE_MAX =
       !IS_UNSIGNED ? static_cast<ResultType>(cpp::numeric_limits<T>::max()) + 1
@@ -120,8 +107,8 @@ strtointeger(const char *__restrict src, int base,
   ResultType const abs_max_div_by_base =
       abs_max / static_cast<ResultType>(base);
 
-  while (src_cur < src_len && isalnum(src[src_cur])) {
-    int cur_digit = b36_char_to_int(src[src_cur]);
+  while (src_cur < src_len && iswalnum(src[src_cur])) {
+    int cur_digit = b36_wchar_to_int(src[src_cur]);
     if (cur_digit >= base)
       break;
 
@@ -165,4 +152,4 @@ strtointeger(const char *__restrict src, int base,
 } // namespace internal
 } // namespace LIBC_NAMESPACE_DECL
 
-#endif // LLVM_LIBC_SRC___SUPPORT_STR_TO_INTEGER_H
+#endif // LLVM_LIBC_SRC___SUPPORT_WCS_TO_INTEGER_H
