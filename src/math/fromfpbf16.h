@@ -1,4 +1,4 @@
-//===-- Half-precision cosh(x) function -----------------------------------===//
+//===-- Implementation header for fromfpbf16 --------------------*- C++ -*-===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,11 +6,16 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "src/math/coshf16.h"
-#include "src/__support/math/coshf16.h"
+#ifndef LLVM_LIBC_SRC_MATH_FROMFPBF16_H
+#define LLVM_LIBC_SRC_MATH_FROMFPBF16_H
+
+#include "src/__support/macros/config.h"
+#include "src/__support/macros/properties/types.h"
 
 namespace LIBC_NAMESPACE_DECL {
 
-LLVM_LIBC_FUNCTION(float16, coshf16, (float16 x)) { return math::coshf16(x); }
+bfloat16 fromfpbf16(bfloat16 x, int rnd, unsigned int width);
 
 } // namespace LIBC_NAMESPACE_DECL
+
+#endif // LLVM_LIBC_SRC_MATH_FROMFPBF16_H
