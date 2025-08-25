@@ -41,16 +41,10 @@ cc_library_static {
         "src/stdlib/qsort.cpp",
         "src/stdlib/qsort_r.cpp",
         "src/string/memccpy.cpp",
-        "src/string/memchr.cpp",
-        "src/string/memrchr.cpp",
-        "src/string/strchr.cpp",
-        "src/string/strchrnul.cpp",
         "src/string/strcspn.cpp",
         "src/string/strlcat.cpp",
         "src/string/strlcpy.cpp",
-        "src/string/strnlen.cpp",
         "src/string/strpbrk.cpp",
-        "src/string/strrchr.cpp",
         "src/string/strsep.cpp",
         "src/string/strspn.cpp",
         "src/wchar/wcpcpy.cpp",
@@ -106,14 +100,11 @@ cc_library_static {
     // When llvm-libc includes <stdlib.h>, use bionic's headers for these.
     header_libs: ["libc_headers"],
 
-    // TODO(b/378117947): push these into non-arch-specific `srcs` as llvm-libc
-    // functions are rolled out.
+    // Unoptimized fallback routines for architectures where we don't
+    // have anything better.
     arch: {
-        arm64: {
-            // These have optimized baseline and vectorized impls from
-            // arm-optimized-routines, and aren't yet heavily optimized by
-            // llvm-libc.
-            exclude_srcs: [
+        arm: {
+            srcs: [
                 "src/string/memchr.cpp",
                 "src/string/memrchr.cpp",
                 "src/string/strchr.cpp",
@@ -122,13 +113,35 @@ cc_library_static {
                 "src/string/strrchr.cpp",
             ],
         },
+        arm64: {
+            srcs: [
+            ],
+        },
         riscv64: {
-            // These have hand-vectorized impls in Bionic, and aren't yet
-            // heavily optimized by llvm-libc.
-            exclude_srcs: [
+            srcs: [
+                "src/string/memrchr.cpp",
+                "src/string/strchrnul.cpp",
+                "src/string/strrchr.cpp",
+            ],
+        },
+        x86: {
+            srcs: [
                 "src/string/memchr.cpp",
+                "src/string/memrchr.cpp",
                 "src/string/strchr.cpp",
+                "src/string/strchrnul.cpp",
                 "src/string/strnlen.cpp",
+                "src/string/strrchr.cpp",
+            ],
+        },
+        x86_64: {
+            srcs: [
+                "src/string/memchr.cpp",
+                "src/string/memrchr.cpp",
+                "src/string/strchr.cpp",
+                "src/string/strchrnul.cpp",
+                "src/string/strnlen.cpp",
+                "src/string/strrchr.cpp",
             ],
         },
     },
@@ -179,16 +192,10 @@ cc_test {
         "test/src/stdlib/lldiv_test.cpp",
         "test/src/stdlib/qsort_r_test.cpp",
         "test/src/string/memccpy_test.cpp",
-        "test/src/string/memchr_test.cpp",
-        "test/src/string/memrchr_test.cpp",
-        "test/src/string/strchr_test.cpp",
-        "test/src/string/strchrnul_test.cpp",
         "test/src/string/strcspn_test.cpp",
         "test/src/string/strlcat_test.cpp",
         "test/src/string/strlcpy_test.cpp",
-        "test/src/string/strnlen_test.cpp",
         "test/src/string/strpbrk_test.cpp",
-        "test/src/string/strrchr_test.cpp",
         "test/src/string/strsep_test.cpp",
         "test/src/string/strspn_test.cpp",
         "test/src/wchar/wcpcpy_test.cpp",
@@ -218,9 +225,8 @@ cc_test {
         "test/src/wchar/wmemset_test.cpp",
     ],
     arch: {
-        arm64: {
-            // Match exclusions in ':llvmlibc' for arm64.
-            exclude_srcs: [
+        arm: {
+            srcs: [
                 "test/src/string/memchr_test.cpp",
                 "test/src/string/memrchr_test.cpp",
                 "test/src/string/strchr_test.cpp",
@@ -229,12 +235,35 @@ cc_test {
                 "test/src/string/strrchr_test.cpp",
             ],
         },
+        arm64: {
+            srcs: [
+            ],
+        },
         riscv64: {
-            // Match exclusions in ':llvmlibc' for riscv64.
-            exclude_srcs: [
+            srcs: [
+                "test/src/string/memrchr_test.cpp",
+                "test/src/string/strchrnul_test.cpp",
+                "test/src/string/strrchr_test.cpp",
+            ],
+        },
+        x86: {
+            srcs: [
                 "test/src/string/memchr_test.cpp",
+                "test/src/string/memrchr_test.cpp",
                 "test/src/string/strchr_test.cpp",
+                "test/src/string/strchrnul_test.cpp",
                 "test/src/string/strnlen_test.cpp",
+                "test/src/string/strrchr_test.cpp",
+            ],
+        },
+        x86_64: {
+            srcs: [
+                "test/src/string/memchr_test.cpp",
+                "test/src/string/memrchr_test.cpp",
+                "test/src/string/strchr_test.cpp",
+                "test/src/string/strchrnul_test.cpp",
+                "test/src/string/strnlen_test.cpp",
+                "test/src/string/strrchr_test.cpp",
             ],
         },
     },
