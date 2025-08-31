@@ -1,4 +1,4 @@
-//===-- Single-precision cospi function -----------------------------------===//
+//===-- Unittests for nextafterbf16 ---------------------------------------===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,11 +6,9 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "src/math/cospif.h"
-#include "src/__support/math/cospif.h"
+#include "NextAfterTest.h"
 
-namespace LIBC_NAMESPACE_DECL {
+#include "src/__support/FPUtil/bfloat16.h"
+#include "src/math/nextafterbf16.h"
 
-LLVM_LIBC_FUNCTION(float, cospif, (float x)) { return math::cospif(x); }
-
-} // namespace LIBC_NAMESPACE_DECL
+LIST_NEXTAFTER_TESTS(bfloat16, LIBC_NAMESPACE::nextafterbf16)
