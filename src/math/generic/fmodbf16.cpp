@@ -1,4 +1,4 @@
-//===-- Implementation header of dladdr -------------------------*- C++ -*-===//
+//===-- Implementation of fmodbf16 function -------------------------------===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,17 +6,16 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef LLVM_LIBC_SRC_DLFCN_DLADDR_H
-#define LLVM_LIBC_SRC_DLFCN_DLADDR_H
-
+#include "src/math/fmodbf16.h"
+#include "src/__support/FPUtil/bfloat16.h"
+#include "src/__support/FPUtil/generic/FMod.h"
+#include "src/__support/common.h"
 #include "src/__support/macros/config.h"
-
-#include "hdr/types/dl_info.h"
 
 namespace LIBC_NAMESPACE_DECL {
 
-int dladdr(const void *__restrict, Dl_info *__restrict);
+LLVM_LIBC_FUNCTION(bfloat16, fmodbf16, (bfloat16 x, bfloat16 y)) {
+  return fputil::generic::FMod<bfloat16>::eval(x, y);
+}
 
 } // namespace LIBC_NAMESPACE_DECL
-
-#endif // LLVM_LIBC_SRC_DLFCN_DLADDR_H
