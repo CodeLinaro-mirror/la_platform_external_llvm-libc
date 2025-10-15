@@ -146,7 +146,6 @@ cc_library_static {
         },
         x86_64: {
             srcs: [
-                "src/string/memrchr.cpp",
                 "src/string/strnlen.cpp",
                 "src/string/strrchr.cpp",
             ],
@@ -266,7 +265,6 @@ cc_test {
         },
         x86_64: {
             srcs: [
-                "test/src/string/memrchr_test.cpp",
                 "test/src/string/strnlen_test.cpp",
                 "test/src/string/strrchr_test.cpp",
             ],
