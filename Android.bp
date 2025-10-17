@@ -147,7 +147,6 @@ cc_library_static {
         x86_64: {
             srcs: [
                 "src/string/memccpy.cpp",
-                "src/string/strnlen.cpp",
             ],
         },
     },
@@ -266,7 +265,6 @@ cc_test {
         x86_64: {
             srcs: [
                 "test/src/string/memccpy_test.cpp",
-                "test/src/string/strnlen_test.cpp",
             ],
         },
     },
