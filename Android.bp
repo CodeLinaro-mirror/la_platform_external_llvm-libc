@@ -12,6 +12,11 @@ cc_defaults {
     cppflags: [
         // Necessary to build.
         "-DLIBC_NAMESPACE=llvmlibc",
+
+        // Necessary for non-namespaced exports.
+        "-DLIBC_COPT_PUBLIC_PACKAGING",
+        // ...which then makes this necessary to keep using bionic's errno.
+        "-DLIBC_ERRNO_MODE=LIBC_ERRNO_MODE_SYSTEM_INLINE",
     ],
 }
 
@@ -25,11 +30,20 @@ cc_library_static {
         "external/llvm-libc",
     ],
     srcs: [
+        "src/__support/CPP/new.cpp",
+
         "src/inttypes/imaxabs.cpp",
         "src/inttypes/imaxdiv.cpp",
+        "src/search/hcreate.cpp",
+        "src/search/hcreate_r.cpp",
+        "src/search/hdestroy.cpp",
+        "src/search/hdestroy_r.cpp",
+        "src/search/hsearch/global.cpp",
+        "src/search/hsearch.cpp",
+        "src/search/hsearch_r.cpp",
+        "src/search/insque.cpp",
         "src/search/lfind.cpp",
         "src/search/lsearch.cpp",
-        "src/search/insque.cpp",
         "src/search/remque.cpp",
         "src/stdlib/abs.cpp",
         "src/stdlib/bsearch.cpp",
@@ -40,18 +54,8 @@ cc_library_static {
         "src/stdlib/lldiv.cpp",
         "src/stdlib/qsort.cpp",
         "src/stdlib/qsort_r.cpp",
-        "src/string/memccpy.cpp",
-        "src/string/memchr.cpp",
-        "src/string/memrchr.cpp",
-        "src/string/strchr.cpp",
-        "src/string/strchrnul.cpp",
-        "src/string/strcspn.cpp",
         "src/string/strlcat.cpp",
         "src/string/strlcpy.cpp",
-        "src/string/strnlen.cpp",
-        "src/string/strpbrk.cpp",
-        "src/string/strrchr.cpp",
-        "src/string/strspn.cpp",
         "src/wchar/wcpcpy.cpp",
         "src/wchar/wcpncpy.cpp",
         "src/wchar/wcscat.cpp",
@@ -79,8 +83,6 @@ cc_library_static {
         "src/wchar/wmemset.cpp",
     ],
     cppflags: [
-        // Necessary for non-namespaced exports.
-        "-DLIBC_COPT_PUBLIC_PACKAGING",
         // See https://github.com/llvm/llvm-project/pull/116686.
         "-DLLVM_LIBC_FUNCTION_ATTR=__attribute__((visibility(\"default\")))",
     ],
@@ -105,14 +107,12 @@ cc_library_static {
     // When llvm-libc includes <stdlib.h>, use bionic's headers for these.
     header_libs: ["libc_headers"],
 
-    // TODO(b/378117947): push these into non-arch-specific `srcs` as llvm-libc
-    // functions are rolled out.
+    // Unoptimized fallback routines for architectures where we don't
+    // have anything better.
     arch: {
-        arm64: {
-            // These have optimized baseline and vectorized impls from
-            // arm-optimized-routines, and aren't yet heavily optimized by
-            // llvm-libc.
-            exclude_srcs: [
+        arm: {
+            srcs: [
+                "src/string/memccpy.cpp",
                 "src/string/memchr.cpp",
                 "src/string/memrchr.cpp",
                 "src/string/strchr.cpp",
@@ -121,12 +121,32 @@ cc_library_static {
                 "src/string/strrchr.cpp",
             ],
         },
+        arm64: {
+            srcs: [
+                "src/string/memccpy.cpp",
+            ],
+        },
         riscv64: {
-            // These have hand-vectorized impls in Bionic, and aren't yet
-            // heavily optimized by llvm-libc.
-            exclude_srcs: [
+            srcs: [
+                "src/string/memccpy.cpp",
+                "src/string/memrchr.cpp",
+                "src/string/strrchr.cpp",
+            ],
+        },
+        x86: {
+            srcs: [
+                "src/string/memccpy.cpp",
                 "src/string/memchr.cpp",
+                "src/string/memrchr.cpp",
                 "src/string/strchr.cpp",
+                "src/string/strchrnul.cpp",
+                "src/string/strnlen.cpp",
+                "src/string/strrchr.cpp",
+            ],
+        },
+        x86_64: {
+            srcs: [
+                "src/string/memccpy.cpp",
                 "src/string/strnlen.cpp",
             ],
         },
@@ -137,6 +157,8 @@ cc_test_library {
     name: "llvmlibc_test_harness",
     defaults: ["llvmlibc_defaults"],
     srcs: [
+        "src/__support/StringUtil/error_to_string.cpp",
+
         "test/UnitTest/LibcTest.cpp",
         "test/UnitTest/TestLogger.cpp",
         "test/UnitTest/LibcTestMain.cpp",
@@ -166,9 +188,10 @@ cc_test {
     srcs: [
         "test/src/inttypes/imaxabs_test.cpp",
         "test/src/inttypes/imaxdiv_test.cpp",
+        "test/src/search/hsearch_test.cpp",
+        "test/src/search/insque_test.cpp",
         "test/src/search/lfind_test.cpp",
         "test/src/search/lsearch_test.cpp",
-        "test/src/search/insque_test.cpp",
         "test/src/stdlib/abs_test.cpp",
         "test/src/stdlib/bsearch_test.cpp",
         "test/src/stdlib/div_test.cpp",
@@ -177,18 +200,8 @@ cc_test {
         "test/src/stdlib/llabs_test.cpp",
         "test/src/stdlib/lldiv_test.cpp",
         "test/src/stdlib/qsort_r_test.cpp",
-        "test/src/string/memccpy_test.cpp",
-        "test/src/string/memchr_test.cpp",
-        "test/src/string/memrchr_test.cpp",
-        "test/src/string/strchr_test.cpp",
-        "test/src/string/strchrnul_test.cpp",
-        "test/src/string/strcspn_test.cpp",
         "test/src/string/strlcat_test.cpp",
         "test/src/string/strlcpy_test.cpp",
-        "test/src/string/strnlen_test.cpp",
-        "test/src/string/strpbrk_test.cpp",
-        "test/src/string/strrchr_test.cpp",
-        "test/src/string/strspn_test.cpp",
         "test/src/wchar/wcpcpy_test.cpp",
         "test/src/wchar/wcpncpy_test.cpp",
         "test/src/wchar/wcscat_test.cpp",
@@ -216,9 +229,9 @@ cc_test {
         "test/src/wchar/wmemset_test.cpp",
     ],
     arch: {
-        arm64: {
-            // Match exclusions in ':llvmlibc' for arm64.
-            exclude_srcs: [
+        arm: {
+            srcs: [
+                "test/src/string/memccpy_test.cpp",
                 "test/src/string/memchr_test.cpp",
                 "test/src/string/memrchr_test.cpp",
                 "test/src/string/strchr_test.cpp",
@@ -227,11 +240,32 @@ cc_test {
                 "test/src/string/strrchr_test.cpp",
             ],
         },
+        arm64: {
+            srcs: [
+                "test/src/string/memccpy_test.cpp",
+            ],
+        },
         riscv64: {
-            // Match exclusions in ':llvmlibc' for riscv64.
-            exclude_srcs: [
+            srcs: [
+                "test/src/string/memccpy_test.cpp",
+                "test/src/string/memrchr_test.cpp",
+                "test/src/string/strrchr_test.cpp",
+            ],
+        },
+        x86: {
+            srcs: [
+                "test/src/string/memccpy_test.cpp",
                 "test/src/string/memchr_test.cpp",
+                "test/src/string/memrchr_test.cpp",
                 "test/src/string/strchr_test.cpp",
+                "test/src/string/strchrnul_test.cpp",
+                "test/src/string/strnlen_test.cpp",
+                "test/src/string/strrchr_test.cpp",
+            ],
+        },
+        x86_64: {
+            srcs: [
+                "test/src/string/memccpy_test.cpp",
                 "test/src/string/strnlen_test.cpp",
             ],
         },
