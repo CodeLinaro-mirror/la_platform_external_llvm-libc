@@ -112,7 +112,6 @@ cc_library_static {
     arch: {
         arm: {
             srcs: [
-                "src/string/memccpy.cpp",
                 "src/string/memchr.cpp",
                 "src/string/memrchr.cpp",
                 "src/string/strchr.cpp",
@@ -123,19 +122,16 @@ cc_library_static {
         },
         arm64: {
             srcs: [
-                "src/string/memccpy.cpp",
             ],
         },
         riscv64: {
             srcs: [
-                "src/string/memccpy.cpp",
                 "src/string/memrchr.cpp",
                 "src/string/strrchr.cpp",
             ],
         },
         x86: {
             srcs: [
-                "src/string/memccpy.cpp",
                 "src/string/memchr.cpp",
                 "src/string/memrchr.cpp",
                 "src/string/strchr.cpp",
@@ -146,7 +142,6 @@ cc_library_static {
         },
         x86_64: {
             srcs: [
-                "src/string/memccpy.cpp",
             ],
         },
     },
@@ -230,7 +225,6 @@ cc_test {
     arch: {
         arm: {
             srcs: [
-                "test/src/string/memccpy_test.cpp",
                 "test/src/string/memchr_test.cpp",
                 "test/src/string/memrchr_test.cpp",
                 "test/src/string/strchr_test.cpp",
@@ -241,19 +235,16 @@ cc_test {
         },
         arm64: {
             srcs: [
-                "test/src/string/memccpy_test.cpp",
             ],
         },
         riscv64: {
             srcs: [
-                "test/src/string/memccpy_test.cpp",
                 "test/src/string/memrchr_test.cpp",
                 "test/src/string/strrchr_test.cpp",
             ],
         },
         x86: {
             srcs: [
-                "test/src/string/memccpy_test.cpp",
                 "test/src/string/memchr_test.cpp",
                 "test/src/string/memrchr_test.cpp",
                 "test/src/string/strchr_test.cpp",
@@ -264,7 +255,6 @@ cc_test {
         },
         x86_64: {
             srcs: [
-                "test/src/string/memccpy_test.cpp",
             ],
         },
     },
