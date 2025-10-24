@@ -16,4 +16,7 @@ third_party {
     day: 31
   }
   license_type: NOTICE
+  security: {
+    tag: "NVD-CPE2.3:cpe:/a:llvm:llvm:19.1.7"
+  }
 }
