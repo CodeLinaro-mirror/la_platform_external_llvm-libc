@@ -107,12 +107,16 @@ cc_library_static {
     // When llvm-libc includes <stdlib.h>, use bionic's headers for these.
     header_libs: ["libc_headers"],
 
-    // Unoptimized fallback routines for architectures where we don't
-    // have anything better.
+    // Unoptimized fallback routines for the "best effort" architectures
+    // that we're not actively working on improving. Even so, we'd like to
+    // remove all of these.
+    // If nothing else, it's usually better to write a trivial C implementation
+    // written in terms of other memory/string functions that _do_ have an
+    // optimized implementation for the architecture.
     arch: {
         arm: {
             srcs: [
-                "src/string/memccpy.cpp",
+                // TODO: replace these with something better.
                 "src/string/memchr.cpp",
                 "src/string/memrchr.cpp",
                 "src/string/strchr.cpp",
@@ -121,33 +125,22 @@ cc_library_static {
                 "src/string/strrchr.cpp",
             ],
         },
-        arm64: {
-            srcs: [
-                "src/string/memccpy.cpp",
-            ],
-        },
         riscv64: {
             srcs: [
-                "src/string/memccpy.cpp",
+                // TODO: replace these with something better.
                 "src/string/memrchr.cpp",
                 "src/string/strrchr.cpp",
             ],
         },
         x86: {
             srcs: [
-                "src/string/memccpy.cpp",
+                // TODO: replace these with something better.
                 "src/string/memchr.cpp",
                 "src/string/memrchr.cpp",
                 "src/string/strchr.cpp",
                 "src/string/strchrnul.cpp",
                 "src/string/strnlen.cpp",
                 "src/string/strrchr.cpp",
-            ],
-        },
-        x86_64: {
-            srcs: [
-                "src/string/memccpy.cpp",
-                "src/string/strnlen.cpp",
             ],
         },
     },
@@ -231,7 +224,6 @@ cc_test {
     arch: {
         arm: {
             srcs: [
-                "test/src/string/memccpy_test.cpp",
                 "test/src/string/memchr_test.cpp",
                 "test/src/string/memrchr_test.cpp",
                 "test/src/string/strchr_test.cpp",
@@ -240,33 +232,20 @@ cc_test {
                 "test/src/string/strrchr_test.cpp",
             ],
         },
-        arm64: {
-            srcs: [
-                "test/src/string/memccpy_test.cpp",
-            ],
-        },
         riscv64: {
             srcs: [
-                "test/src/string/memccpy_test.cpp",
                 "test/src/string/memrchr_test.cpp",
                 "test/src/string/strrchr_test.cpp",
             ],
         },
         x86: {
             srcs: [
-                "test/src/string/memccpy_test.cpp",
                 "test/src/string/memchr_test.cpp",
                 "test/src/string/memrchr_test.cpp",
                 "test/src/string/strchr_test.cpp",
                 "test/src/string/strchrnul_test.cpp",
                 "test/src/string/strnlen_test.cpp",
                 "test/src/string/strrchr_test.cpp",
-            ],
-        },
-        x86_64: {
-            srcs: [
-                "test/src/string/memccpy_test.cpp",
-                "test/src/string/strnlen_test.cpp",
             ],
         },
     },
