@@ -54,8 +54,6 @@ cc_library_static {
         "src/stdlib/lldiv.cpp",
         "src/stdlib/qsort.cpp",
         "src/stdlib/qsort_r.cpp",
-        "src/string/strlcat.cpp",
-        "src/string/strlcpy.cpp",
         "src/wchar/wcpcpy.cpp",
         "src/wchar/wcpncpy.cpp",
         "src/wchar/wcscat.cpp",
@@ -144,6 +142,11 @@ cc_library_static {
                 "src/string/strrchr.cpp",
             ],
         },
+        x86_64: {
+            srcs: [
+                "src/string/strnlen.cpp",
+            ],
+        },
     },
 }
 
@@ -194,8 +197,6 @@ cc_test {
         "test/src/stdlib/llabs_test.cpp",
         "test/src/stdlib/lldiv_test.cpp",
         "test/src/stdlib/qsort_r_test.cpp",
-        "test/src/string/strlcat_test.cpp",
-        "test/src/string/strlcpy_test.cpp",
         "test/src/wchar/wcpcpy_test.cpp",
         "test/src/wchar/wcpncpy_test.cpp",
         "test/src/wchar/wcscat_test.cpp",
@@ -248,6 +249,11 @@ cc_test {
                 "test/src/string/strchrnul_test.cpp",
                 "test/src/string/strnlen_test.cpp",
                 "test/src/string/strrchr_test.cpp",
+            ],
+        },
+        x86_64: {
+            srcs: [
+                "test/src/string/strnlen_test.cpp",
             ],
         },
     },
