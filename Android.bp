@@ -120,7 +120,6 @@ cc_library_static {
             srcs: [
                 // TODO: replace these with something better.
                 "src/string/memrchr.cpp",
-                "src/string/strrchr.cpp",
             ],
         },
         x86: {
@@ -217,7 +216,6 @@ cc_test {
         riscv64: {
             srcs: [
                 "test/src/string/memrchr_test.cpp",
-                "test/src/string/strrchr_test.cpp",
             ],
         },
         x86: {
