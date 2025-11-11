@@ -55,7 +55,6 @@ cc_library_static {
         "src/wchar/wcscspn.cpp",
         "src/wchar/wcslcat.cpp",
         "src/wchar/wcslcpy.cpp",
-        "src/wchar/wcslen.cpp",
         "src/wchar/wcsncat.cpp",
         "src/wchar/wcsncmp.cpp",
         "src/wchar/wcsncpy.cpp",
@@ -114,12 +113,19 @@ cc_library_static {
                 "src/string/strncmp.cpp",
                 "src/string/strnlen.cpp",
                 "src/string/strrchr.cpp",
+                "src/wchar/wcslen.cpp",
+            ],
+        },
+        arm64: {
+            srcs: [
+                "src/wchar/wcslen.cpp",
             ],
         },
         riscv64: {
             srcs: [
                 // TODO: replace these with something better.
                 "src/string/memrchr.cpp",
+                "src/wchar/wcslen.cpp",
             ],
         },
         x86: {
@@ -131,6 +137,7 @@ cc_library_static {
                 "src/string/strchrnul.cpp",
                 "src/string/strnlen.cpp",
                 "src/string/strrchr.cpp",
+                "src/wchar/wcslen.cpp",
             ],
         },
         x86_64: {
@@ -189,7 +196,6 @@ cc_test {
         "test/src/wchar/wcscspn_test.cpp",
         "test/src/wchar/wcslcat_test.cpp",
         "test/src/wchar/wcslcpy_test.cpp",
-        "test/src/wchar/wcslen_test.cpp",
         "test/src/wchar/wcsncat_test.cpp",
         "test/src/wchar/wcsncmp_test.cpp",
         "test/src/wchar/wcsncpy_test.cpp",
@@ -216,11 +222,18 @@ cc_test {
                 "test/src/string/strncmp_test.cpp",
                 "test/src/string/strnlen_test.cpp",
                 "test/src/string/strrchr_test.cpp",
+                "test/src/wchar/wcslen_test.cpp",
+            ],
+        },
+        arm64: {
+            srcs: [
+                "test/src/wchar/wcslen_test.cpp",
             ],
         },
         riscv64: {
             srcs: [
                 "test/src/string/memrchr_test.cpp",
+                "test/src/wchar/wcslen_test.cpp",
             ],
         },
         x86: {
@@ -231,6 +244,7 @@ cc_test {
                 "test/src/string/strchrnul_test.cpp",
                 "test/src/string/strnlen_test.cpp",
                 "test/src/string/strrchr_test.cpp",
+                "test/src/wchar/wcslen_test.cpp",
             ],
         },
         x86_64: {
