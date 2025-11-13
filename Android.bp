@@ -70,7 +70,6 @@ cc_library_static {
         "src/wchar/wmemcpy.cpp",
         "src/wchar/wmemmove.cpp",
         "src/wchar/wmempcpy.cpp",
-        "src/wchar/wmemset.cpp",
     ],
     cppflags: [
         // See https://github.com/llvm/llvm-project/pull/116686.
@@ -204,7 +203,6 @@ cc_test {
         "test/src/wchar/wmemcpy_test.cpp",
         "test/src/wchar/wmemmove_test.cpp",
         "test/src/wchar/wmempcpy_test.cpp",
-        "test/src/wchar/wmemset_test.cpp",
     ],
     arch: {
         arm: {
