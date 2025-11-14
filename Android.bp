@@ -32,8 +32,6 @@ cc_library_static {
     srcs: [
         "src/__support/CPP/new.cpp",
 
-        "src/inttypes/imaxabs.cpp",
-        "src/inttypes/imaxdiv.cpp",
         "src/search/hcreate.cpp",
         "src/search/hcreate_r.cpp",
         "src/search/hdestroy.cpp",
@@ -45,13 +43,7 @@ cc_library_static {
         "src/search/lfind.cpp",
         "src/search/lsearch.cpp",
         "src/search/remque.cpp",
-        "src/stdlib/abs.cpp",
         "src/stdlib/bsearch.cpp",
-        "src/stdlib/div.cpp",
-        "src/stdlib/labs.cpp",
-        "src/stdlib/ldiv.cpp",
-        "src/stdlib/llabs.cpp",
-        "src/stdlib/lldiv.cpp",
         "src/stdlib/qsort.cpp",
         "src/stdlib/qsort_r.cpp",
         "src/wchar/wcpcpy.cpp",
@@ -142,11 +134,6 @@ cc_library_static {
                 "src/string/strrchr.cpp",
             ],
         },
-        x86_64: {
-            srcs: [
-                "src/string/strnlen.cpp",
-            ],
-        },
     },
 }
 
@@ -183,19 +170,11 @@ cc_test {
     name: "llvmlibc_tests",
     defaults: ["llvmlibc_test_defaults"],
     srcs: [
-        "test/src/inttypes/imaxabs_test.cpp",
-        "test/src/inttypes/imaxdiv_test.cpp",
         "test/src/search/hsearch_test.cpp",
         "test/src/search/insque_test.cpp",
         "test/src/search/lfind_test.cpp",
         "test/src/search/lsearch_test.cpp",
-        "test/src/stdlib/abs_test.cpp",
         "test/src/stdlib/bsearch_test.cpp",
-        "test/src/stdlib/div_test.cpp",
-        "test/src/stdlib/labs_test.cpp",
-        "test/src/stdlib/ldiv_test.cpp",
-        "test/src/stdlib/llabs_test.cpp",
-        "test/src/stdlib/lldiv_test.cpp",
         "test/src/stdlib/qsort_r_test.cpp",
         "test/src/wchar/wcpcpy_test.cpp",
         "test/src/wchar/wcpncpy_test.cpp",
@@ -249,11 +228,6 @@ cc_test {
                 "test/src/string/strchrnul_test.cpp",
                 "test/src/string/strnlen_test.cpp",
                 "test/src/string/strrchr_test.cpp",
-            ],
-        },
-        x86_64: {
-            srcs: [
-                "test/src/string/strnlen_test.cpp",
             ],
         },
     },
