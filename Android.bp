@@ -114,11 +114,6 @@ cc_library_static {
                 "src/wchar/wcslen.cpp",
             ],
         },
-        arm64: {
-            srcs: [
-                "src/wchar/wcslen.cpp",
-            ],
-        },
         riscv64: {
             srcs: [
                 // TODO: replace these with something better.
@@ -218,11 +213,6 @@ cc_test {
                 "test/src/string/strncmp_test.cpp",
                 "test/src/string/strnlen_test.cpp",
                 "test/src/string/strrchr_test.cpp",
-                "test/src/wchar/wcslen_test.cpp",
-            ],
-        },
-        arm64: {
-            srcs: [
                 "test/src/wchar/wcslen_test.cpp",
             ],
         },
