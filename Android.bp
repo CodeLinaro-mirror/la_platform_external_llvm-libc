@@ -65,9 +65,6 @@ cc_library_static {
         "src/wchar/wcsstr.cpp",
         "src/wchar/wcstok.cpp",
         "src/wchar/wmemcmp.cpp",
-        "src/wchar/wmemcpy.cpp",
-        "src/wchar/wmemmove.cpp",
-        "src/wchar/wmempcpy.cpp",
     ],
     cppflags: [
         // See https://github.com/llvm/llvm-project/pull/116686.
@@ -204,9 +201,6 @@ cc_test {
         "test/src/wchar/wcsstr_test.cpp",
         "test/src/wchar/wcstok_test.cpp",
         "test/src/wchar/wmemcmp_test.cpp",
-        "test/src/wchar/wmemcpy_test.cpp",
-        "test/src/wchar/wmemmove_test.cpp",
-        "test/src/wchar/wmempcpy_test.cpp",
     ],
     arch: {
         arm: {
