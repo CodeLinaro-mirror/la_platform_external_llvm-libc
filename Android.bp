@@ -54,15 +54,8 @@ cc_library_static {
         "src/stdlib/lldiv.cpp",
         "src/stdlib/qsort.cpp",
         "src/stdlib/qsort_r.cpp",
-        "src/string/memccpy.cpp",
-        "src/string/strcspn.cpp",
         "src/string/strlcat.cpp",
         "src/string/strlcpy.cpp",
-        "src/string/strpbrk.cpp",
-        "src/string/strsep.cpp",
-        "src/string/strspn.cpp",
-        "src/string/strtok.cpp",
-        "src/string/strtok_r.cpp",
         "src/wchar/wcpcpy.cpp",
         "src/wchar/wcpncpy.cpp",
         "src/wchar/wcscat.cpp",
@@ -119,6 +112,7 @@ cc_library_static {
     arch: {
         arm: {
             srcs: [
+                "src/string/memccpy.cpp",
                 "src/string/memchr.cpp",
                 "src/string/memrchr.cpp",
                 "src/string/strchr.cpp",
@@ -129,17 +123,19 @@ cc_library_static {
         },
         arm64: {
             srcs: [
+                "src/string/memccpy.cpp",
             ],
         },
         riscv64: {
             srcs: [
+                "src/string/memccpy.cpp",
                 "src/string/memrchr.cpp",
-                "src/string/strchrnul.cpp",
                 "src/string/strrchr.cpp",
             ],
         },
         x86: {
             srcs: [
+                "src/string/memccpy.cpp",
                 "src/string/memchr.cpp",
                 "src/string/memrchr.cpp",
                 "src/string/strchr.cpp",
@@ -150,12 +146,8 @@ cc_library_static {
         },
         x86_64: {
             srcs: [
-                "src/string/memchr.cpp",
-                "src/string/memrchr.cpp",
-                "src/string/strchr.cpp",
-                "src/string/strchrnul.cpp",
+                "src/string/memccpy.cpp",
                 "src/string/strnlen.cpp",
-                "src/string/strrchr.cpp",
             ],
         },
     },
@@ -208,15 +200,8 @@ cc_test {
         "test/src/stdlib/llabs_test.cpp",
         "test/src/stdlib/lldiv_test.cpp",
         "test/src/stdlib/qsort_r_test.cpp",
-        "test/src/string/memccpy_test.cpp",
-        "test/src/string/strcspn_test.cpp",
         "test/src/string/strlcat_test.cpp",
         "test/src/string/strlcpy_test.cpp",
-        "test/src/string/strpbrk_test.cpp",
-        "test/src/string/strsep_test.cpp",
-        "test/src/string/strspn_test.cpp",
-        "test/src/string/strtok_test.cpp",
-        "test/src/string/strtok_r_test.cpp",
         "test/src/wchar/wcpcpy_test.cpp",
         "test/src/wchar/wcpncpy_test.cpp",
         "test/src/wchar/wcscat_test.cpp",
@@ -246,6 +231,7 @@ cc_test {
     arch: {
         arm: {
             srcs: [
+                "test/src/string/memccpy_test.cpp",
                 "test/src/string/memchr_test.cpp",
                 "test/src/string/memrchr_test.cpp",
                 "test/src/string/strchr_test.cpp",
@@ -256,17 +242,19 @@ cc_test {
         },
         arm64: {
             srcs: [
+                "test/src/string/memccpy_test.cpp",
             ],
         },
         riscv64: {
             srcs: [
+                "test/src/string/memccpy_test.cpp",
                 "test/src/string/memrchr_test.cpp",
-                "test/src/string/strchrnul_test.cpp",
                 "test/src/string/strrchr_test.cpp",
             ],
         },
         x86: {
             srcs: [
+                "test/src/string/memccpy_test.cpp",
                 "test/src/string/memchr_test.cpp",
                 "test/src/string/memrchr_test.cpp",
                 "test/src/string/strchr_test.cpp",
@@ -277,12 +265,8 @@ cc_test {
         },
         x86_64: {
             srcs: [
-                "test/src/string/memchr_test.cpp",
-                "test/src/string/memrchr_test.cpp",
-                "test/src/string/strchr_test.cpp",
-                "test/src/string/strchrnul_test.cpp",
+                "test/src/string/memccpy_test.cpp",
                 "test/src/string/strnlen_test.cpp",
-                "test/src/string/strrchr_test.cpp",
             ],
         },
     },
