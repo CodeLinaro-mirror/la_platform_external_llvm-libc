@@ -130,11 +130,6 @@ cc_library_static {
                 "src/wchar/wcslen.cpp",
             ],
         },
-        x86_64: {
-            srcs: [
-                "src/string/strnlen.cpp",
-            ],
-        },
     },
 }
 
@@ -225,11 +220,6 @@ cc_test {
                 "test/src/string/strnlen_test.cpp",
                 "test/src/string/strrchr_test.cpp",
                 "test/src/wchar/wcslen_test.cpp",
-            ],
-        },
-        x86_64: {
-            srcs: [
-                "test/src/string/strnlen_test.cpp",
             ],
         },
     },
