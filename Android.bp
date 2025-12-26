@@ -32,8 +32,6 @@ cc_library_static {
     srcs: [
         "src/__support/CPP/new.cpp",
 
-        "src/inttypes/imaxabs.cpp",
-        "src/inttypes/imaxdiv.cpp",
         "src/search/hcreate.cpp",
         "src/search/hcreate_r.cpp",
         "src/search/hdestroy.cpp",
@@ -45,17 +43,9 @@ cc_library_static {
         "src/search/lfind.cpp",
         "src/search/lsearch.cpp",
         "src/search/remque.cpp",
-        "src/stdlib/abs.cpp",
         "src/stdlib/bsearch.cpp",
-        "src/stdlib/div.cpp",
-        "src/stdlib/labs.cpp",
-        "src/stdlib/ldiv.cpp",
-        "src/stdlib/llabs.cpp",
-        "src/stdlib/lldiv.cpp",
         "src/stdlib/qsort.cpp",
         "src/stdlib/qsort_r.cpp",
-        "src/string/strlcat.cpp",
-        "src/string/strlcpy.cpp",
         "src/wchar/wcpcpy.cpp",
         "src/wchar/wcpncpy.cpp",
         "src/wchar/wcscat.cpp",
@@ -107,47 +97,41 @@ cc_library_static {
     // When llvm-libc includes <stdlib.h>, use bionic's headers for these.
     header_libs: ["libc_headers"],
 
-    // Unoptimized fallback routines for architectures where we don't
-    // have anything better.
+    // Unoptimized fallback routines for the "best effort" architectures
+    // that we're not actively working on improving. Even so, we'd like to
+    // remove all of these.
+    // If nothing else, it's usually better to write a trivial C implementation
+    // written in terms of other memory/string functions that _do_ have an
+    // optimized implementation for the architecture.
     arch: {
         arm: {
             srcs: [
-                "src/string/memccpy.cpp",
+                // TODO: replace these with something better.
                 "src/string/memchr.cpp",
                 "src/string/memrchr.cpp",
                 "src/string/strchr.cpp",
                 "src/string/strchrnul.cpp",
+                "src/string/strncmp.cpp",
                 "src/string/strnlen.cpp",
                 "src/string/strrchr.cpp",
             ],
         },
-        arm64: {
-            srcs: [
-                "src/string/memccpy.cpp",
-            ],
-        },
         riscv64: {
             srcs: [
-                "src/string/memccpy.cpp",
+                // TODO: replace these with something better.
                 "src/string/memrchr.cpp",
                 "src/string/strrchr.cpp",
             ],
         },
         x86: {
             srcs: [
-                "src/string/memccpy.cpp",
+                // TODO: replace these with something better.
                 "src/string/memchr.cpp",
                 "src/string/memrchr.cpp",
                 "src/string/strchr.cpp",
                 "src/string/strchrnul.cpp",
                 "src/string/strnlen.cpp",
                 "src/string/strrchr.cpp",
-            ],
-        },
-        x86_64: {
-            srcs: [
-                "src/string/memccpy.cpp",
-                "src/string/strnlen.cpp",
             ],
         },
     },
@@ -186,22 +170,12 @@ cc_test {
     name: "llvmlibc_tests",
     defaults: ["llvmlibc_test_defaults"],
     srcs: [
-        "test/src/inttypes/imaxabs_test.cpp",
-        "test/src/inttypes/imaxdiv_test.cpp",
         "test/src/search/hsearch_test.cpp",
         "test/src/search/insque_test.cpp",
         "test/src/search/lfind_test.cpp",
         "test/src/search/lsearch_test.cpp",
-        "test/src/stdlib/abs_test.cpp",
         "test/src/stdlib/bsearch_test.cpp",
-        "test/src/stdlib/div_test.cpp",
-        "test/src/stdlib/labs_test.cpp",
-        "test/src/stdlib/ldiv_test.cpp",
-        "test/src/stdlib/llabs_test.cpp",
-        "test/src/stdlib/lldiv_test.cpp",
         "test/src/stdlib/qsort_r_test.cpp",
-        "test/src/string/strlcat_test.cpp",
-        "test/src/string/strlcpy_test.cpp",
         "test/src/wchar/wcpcpy_test.cpp",
         "test/src/wchar/wcpncpy_test.cpp",
         "test/src/wchar/wcscat_test.cpp",
@@ -231,42 +205,29 @@ cc_test {
     arch: {
         arm: {
             srcs: [
-                "test/src/string/memccpy_test.cpp",
                 "test/src/string/memchr_test.cpp",
                 "test/src/string/memrchr_test.cpp",
                 "test/src/string/strchr_test.cpp",
                 "test/src/string/strchrnul_test.cpp",
+                "test/src/string/strncmp_test.cpp",
                 "test/src/string/strnlen_test.cpp",
                 "test/src/string/strrchr_test.cpp",
             ],
         },
-        arm64: {
-            srcs: [
-                "test/src/string/memccpy_test.cpp",
-            ],
-        },
         riscv64: {
             srcs: [
-                "test/src/string/memccpy_test.cpp",
                 "test/src/string/memrchr_test.cpp",
                 "test/src/string/strrchr_test.cpp",
             ],
         },
         x86: {
             srcs: [
-                "test/src/string/memccpy_test.cpp",
                 "test/src/string/memchr_test.cpp",
                 "test/src/string/memrchr_test.cpp",
                 "test/src/string/strchr_test.cpp",
                 "test/src/string/strchrnul_test.cpp",
                 "test/src/string/strnlen_test.cpp",
                 "test/src/string/strrchr_test.cpp",
-            ],
-        },
-        x86_64: {
-            srcs: [
-                "test/src/string/memccpy_test.cpp",
-                "test/src/string/strnlen_test.cpp",
             ],
         },
     },
