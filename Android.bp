@@ -55,7 +55,6 @@ cc_library_static {
         "src/wchar/wcscspn.cpp",
         "src/wchar/wcslcat.cpp",
         "src/wchar/wcslcpy.cpp",
-        "src/wchar/wcslen.cpp",
         "src/wchar/wcsncat.cpp",
         "src/wchar/wcsncmp.cpp",
         "src/wchar/wcsncpy.cpp",
@@ -65,12 +64,7 @@ cc_library_static {
         "src/wchar/wcsspn.cpp",
         "src/wchar/wcsstr.cpp",
         "src/wchar/wcstok.cpp",
-        "src/wchar/wmemchr.cpp",
         "src/wchar/wmemcmp.cpp",
-        "src/wchar/wmemcpy.cpp",
-        "src/wchar/wmemmove.cpp",
-        "src/wchar/wmempcpy.cpp",
-        "src/wchar/wmemset.cpp",
     ],
     cppflags: [
         // See https://github.com/llvm/llvm-project/pull/116686.
@@ -114,13 +108,14 @@ cc_library_static {
                 "src/string/strncmp.cpp",
                 "src/string/strnlen.cpp",
                 "src/string/strrchr.cpp",
+                "src/wchar/wcslen.cpp",
             ],
         },
         riscv64: {
             srcs: [
                 // TODO: replace these with something better.
                 "src/string/memrchr.cpp",
-                "src/string/strrchr.cpp",
+                "src/wchar/wcslen.cpp",
             ],
         },
         x86: {
@@ -132,6 +127,12 @@ cc_library_static {
                 "src/string/strchrnul.cpp",
                 "src/string/strnlen.cpp",
                 "src/string/strrchr.cpp",
+                "src/wchar/wcslen.cpp",
+            ],
+        },
+        x86_64: {
+            srcs: [
+                "src/string/strnlen.cpp",
             ],
         },
     },
@@ -185,7 +186,6 @@ cc_test {
         "test/src/wchar/wcscspn_test.cpp",
         "test/src/wchar/wcslcat_test.cpp",
         "test/src/wchar/wcslcpy_test.cpp",
-        "test/src/wchar/wcslen_test.cpp",
         "test/src/wchar/wcsncat_test.cpp",
         "test/src/wchar/wcsncmp_test.cpp",
         "test/src/wchar/wcsncpy_test.cpp",
@@ -195,12 +195,7 @@ cc_test {
         "test/src/wchar/wcsspn_test.cpp",
         "test/src/wchar/wcsstr_test.cpp",
         "test/src/wchar/wcstok_test.cpp",
-        "test/src/wchar/wmemchr_test.cpp",
         "test/src/wchar/wmemcmp_test.cpp",
-        "test/src/wchar/wmemcpy_test.cpp",
-        "test/src/wchar/wmemmove_test.cpp",
-        "test/src/wchar/wmempcpy_test.cpp",
-        "test/src/wchar/wmemset_test.cpp",
     ],
     arch: {
         arm: {
@@ -212,12 +207,13 @@ cc_test {
                 "test/src/string/strncmp_test.cpp",
                 "test/src/string/strnlen_test.cpp",
                 "test/src/string/strrchr_test.cpp",
+                "test/src/wchar/wcslen_test.cpp",
             ],
         },
         riscv64: {
             srcs: [
                 "test/src/string/memrchr_test.cpp",
-                "test/src/string/strrchr_test.cpp",
+                "test/src/wchar/wcslen_test.cpp",
             ],
         },
         x86: {
@@ -228,6 +224,12 @@ cc_test {
                 "test/src/string/strchrnul_test.cpp",
                 "test/src/string/strnlen_test.cpp",
                 "test/src/string/strrchr_test.cpp",
+                "test/src/wchar/wcslen_test.cpp",
+            ],
+        },
+        x86_64: {
+            srcs: [
+                "test/src/string/strnlen_test.cpp",
             ],
         },
     },
