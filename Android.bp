@@ -8,6 +8,7 @@ cc_defaults {
         // b/379681564: Bionic's dependencies all must support linux-bionic,
         // which is not an enabled target by default.
         "linux_bionic_supported",
+        "x86_disable_fdo_profile_sample_accurate",
     ],
     cppflags: [
         // Necessary to build.
