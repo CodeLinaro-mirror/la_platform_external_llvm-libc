@@ -8,6 +8,7 @@ cc_defaults {
         // b/379681564: Bionic's dependencies all must support linux-bionic,
         // which is not an enabled target by default.
         "linux_bionic_supported",
+        "x86_disable_fdo_profile_sample_accurate",
     ],
     cppflags: [
         // Necessary to build.
@@ -86,7 +87,10 @@ cc_library_static {
     vendor_ramdisk_available: true,
 
     // Bionic's dependencies must also set this.
-    apex_available: ["com.android.runtime"],
+    apex_available: [
+        "//apex_available:platform",
+        "com.android.runtime",
+    ],
 
     // When llvm-libc includes <stdlib.h>, use bionic's headers for these.
     header_libs: ["libc_headers"],
